@@ -102,15 +102,75 @@ tbody td.dj{background:rgba(107,76,154,0.04)}
 .ins-bullets li{font-size:11px;line-height:1.5;opacity:.92;padding-left:14px;position:relative}
 .ins-bullets li::before{content:'•';position:absolute;left:0;opacity:.6}
 
-/* Mobile: stack everything vertically */
+/* ── Mobile ────────────────────────────────────────── */
 @media(max-width:700px){
-  .page{flex-direction:column}
-  .sidebar{width:100%;height:auto;position:static;border-right:none;border-bottom:1px solid #E8E4F0;padding:1rem}
-  .tabs{flex-direction:row;flex-wrap:wrap}
-  .tab{width:auto;font-size:10.5px;padding:5px 10px;border-radius:20px}
+
+  /* Page stacks top-to-bottom */
+  .page{flex-direction:column;min-height:unset}
+
+  /* Sidebar → compact top control bar */
+  .sidebar{
+    width:100%;height:auto;position:static;
+    border-right:none;border-bottom:1px solid #E8E4F0;
+    padding:.875rem 1rem 1rem
+  }
+  .logo{width:88px;margin-bottom:.5rem}
+  h1{font-size:13px;margin-bottom:2px}
+  .sub{font-size:10px;margin-bottom:.75rem}
+  .nav-lbl{margin-top:.75rem;margin-bottom:4px}
+  .nav-lbl:first-of-type{margin-top:0}
+
+  /* Plan tabs — horizontal scroll strip, no wrap */
+  .tabs{
+    flex-direction:row;flex-wrap:nowrap;
+    overflow-x:auto;padding-bottom:2px;gap:5px
+  }
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{
+    white-space:nowrap;flex-shrink:0;width:auto;
+    font-size:11.5px;padding:0 14px;border-radius:20px;
+    min-height:40px;line-height:40px
+  }
+
+  /* Team size pills — larger touch targets */
+  .upills{gap:5px}
+  .upill{font-size:12px;padding:0 14px;min-height:36px;line-height:36px}
+  .user-note{display:block;margin-top:6px;font-size:9.5px}
+
+  /* Main + content */
   .main{flex-direction:column}
-  .notes{width:100%;border-left:none;border-top:1px solid #E8E4F0;padding:1rem}
+  .content{padding:.875rem 1rem 1rem}
+
+  /* Price bars — tighten slightly */
+  .br{padding:8px 10px}
+  .br-name{font-size:11.5px}
+  .br-price{font-size:12px}
+  .tags{gap:3px}
+  .tg{font-size:9px}
+
+  /* Feature table — horizontal scroll so columns stay readable */
+  .ftbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:.875rem}
+  table{min-width:380px;table-layout:fixed}
+  col.c0{width:48%}col.c1,col.c2,col.c3,col.c4{width:13%}
+  thead th{font-size:8.5px;padding:6px 2px}
+  tbody td:first-child{font-size:10px;padding-left:8px}
+  tbody td{padding:5px 2px}
+
+  /* Legend — tighter wrap */
+  .legend{gap:6px;margin-bottom:.625rem}
+
+  /* Notes panel — full width below content */
+  .notes{
+    width:100%;border-left:none;
+    border-top:1px solid #E8E4F0;
+    padding:.875rem 1rem 1.25rem;
+    background:#FAFAFA
+  }
   .notes-inner{position:static}
+  .notes-hdr{margin-bottom:8px}
+  .ins{border-radius:10px}
+  .ins-num{font-size:15px}
+  .ins-bullets li{font-size:11px}
 }
 </style>
 
