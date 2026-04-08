@@ -31,11 +31,24 @@ h1{font-size:15px;font-weight:700;margin-bottom:4px;line-height:1.3;color:#1A152
 .tab.on{background:#6B4C9A;border-color:#6B4C9A;color:#fff}
 .tab.leg.on{background:#8B70B8;border-color:#8B70B8}
 
-/* Team size pills — wrap in sidebar */
+/* Team size pills */
 .upills{display:flex;flex-wrap:wrap;gap:3px}
 .upill{background:#F5F4F8;border:1px solid #E0DCF0;color:#6B6090;font-size:10px;font-weight:500;padding:4px 9px;border-radius:20px;cursor:pointer;transition:all .15s;white-space:nowrap}
 .upill.on{background:#3A3060;border-color:#3A3060;color:#fff}
 .user-note{font-size:9px;color:#9090A8;margin-top:6px;line-height:1.4;display:block}
+
+/* Add-on toggles */
+.addon-toggles{display:flex;flex-direction:column;gap:4px}
+.addon-btn{display:flex;justify-content:space-between;align-items:center;width:100%;background:#fff;border:1px solid #E0DCF0;border-radius:8px;padding:6px 9px;cursor:pointer;transition:all .15s;text-align:left}
+.addon-btn:hover{border-color:#C4B8DC;background:#FAFAFA}
+.addon-btn.on{background:#F0FDF4;border-color:#16A34A}
+.addon-btn-name{font-size:10.5px;font-weight:500;color:#3A3060;transition:color .15s}
+.addon-btn.on .addon-btn-name{color:#166534}
+.addon-btn-price{font-size:9.5px;font-weight:600;color:#9090A8;white-space:nowrap;margin-left:4px;transition:color .15s}
+.addon-btn.on .addon-btn-price{color:#16A34A}
+.addon-btn-check{font-size:11px;color:#16A34A;margin-left:4px;opacity:0;transition:opacity .15s}
+.addon-btn.on .addon-btn-check{opacity:1}
+.addon-bundled{font-size:10px;color:#9090A8;font-style:italic;padding:4px 2px}
 
 /* Bars */
 .bars{margin-bottom:1rem;display:flex;flex-direction:column;gap:6px}
@@ -53,7 +66,8 @@ h1{font-size:15px;font-weight:700;margin-bottom:4px;line-height:1.3;color:#1A152
 .br-price.best{color:#16A34A !important}
 .br-price.worst{color:#DC2626 !important}
 .br-bd{font-size:9px;color:#9090A8;display:block}
-.track{height:6px;background:#EDE9F5;border-radius:3px;overflow:hidden}
+.br-addon-line{font-size:9px;color:#16A34A;font-weight:600;margin-top:2px}
+.track{height:6px;background:#EDE9F5;border-radius:3px;overflow:hidden;margin-top:2px}
 .fill{height:100%;border-radius:3px;background:#C4B8DC;width:0;transition:width .55s cubic-bezier(.4,0,.2,1)}
 .br.hi .fill{background:#6B4C9A}
 .br.hi-leg .fill{background:#8B70B8}
@@ -90,6 +104,9 @@ tbody td.dj{background:rgba(107,76,154,0.04)}
 .bundle-lbl{font-size:7px;color:#16A34A;font-weight:700;letter-spacing:.03em}
 .bundle-lbl.leg{background:#F0FDF4;padding:1px 4px;border-radius:4px}
 .addon-pill{display:inline-block;background:#FFF7ED;color:#C2770A;font-size:8px;font-weight:700;padding:1px 4px;border-radius:6px;line-height:1.5;white-space:nowrap}
+.added-pill{display:inline-flex;flex-direction:column;align-items:center;gap:0}
+.added-check{color:#16A34A;font-size:13px;line-height:1}
+.added-lbl{font-size:7px;color:#16A34A;font-weight:700;letter-spacing:.03em}
 .legend{display:flex;gap:8px;font-size:9.5px;color:#8888A8;margin-bottom:.75rem;flex-wrap:wrap;align-items:center}
 .legend span{display:flex;align-items:center;gap:3px}
 
@@ -101,74 +118,43 @@ tbody td.dj{background:rgba(107,76,154,0.04)}
 .ins-bullets{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px}
 .ins-bullets li{font-size:11px;line-height:1.5;opacity:.92;padding-left:14px;position:relative}
 .ins-bullets li::before{content:'•';position:absolute;left:0;opacity:.6}
+.ins-bullets li.hi{opacity:1;font-weight:600}
+.ins-bullets li.hi::before{content:'✓';color:#86efac}
 
 /* ── Mobile ────────────────────────────────────────── */
 @media(max-width:700px){
-
-  /* Page stacks top-to-bottom */
   .page{flex-direction:column;min-height:unset}
-
-  /* Sidebar → compact top control bar */
-  .sidebar{
-    width:100%;height:auto;position:static;
-    border-right:none;border-bottom:1px solid #E8E4F0;
-    padding:.875rem 1rem 1rem
-  }
+  .sidebar{width:100%;height:auto;position:static;border-right:none;border-bottom:1px solid #E8E4F0;padding:.875rem 1rem 1rem}
   .logo{width:88px;margin-bottom:.5rem}
   h1{font-size:13px;margin-bottom:2px}
   .sub{font-size:10px;margin-bottom:.75rem}
   .nav-lbl{margin-top:.75rem;margin-bottom:4px}
   .nav-lbl:first-of-type{margin-top:0}
-
-  /* Plan tabs — horizontal scroll strip, no wrap */
-  .tabs{
-    flex-direction:row;flex-wrap:nowrap;
-    overflow-x:auto;padding-bottom:2px;gap:5px
-  }
+  .tabs{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;gap:5px}
   .tabs::-webkit-scrollbar{display:none}
-  .tab{
-    white-space:nowrap;flex-shrink:0;width:auto;
-    font-size:11.5px;padding:0 14px;border-radius:20px;
-    min-height:40px;line-height:40px
-  }
-
-  /* Team size pills — larger touch targets */
+  .tab{white-space:nowrap;flex-shrink:0;width:auto;font-size:11.5px;padding:0 14px;border-radius:20px;min-height:40px;line-height:40px}
   .upills{gap:5px}
   .upill{font-size:12px;padding:0 14px;min-height:36px;line-height:36px}
   .user-note{display:block;margin-top:6px;font-size:9.5px}
-
-  /* Main + content */
+  .addon-toggles{flex-direction:row;flex-wrap:wrap;gap:5px}
+  .addon-btn{width:auto;flex-shrink:0;padding:5px 10px;border-radius:20px;min-height:36px}
   .main{flex-direction:column}
   .content{padding:.875rem 1rem 1rem}
-
-  /* Price bars — tighten slightly */
   .br{padding:8px 10px}
   .br-name{font-size:11.5px}
   .br-price{font-size:12px}
   .tags{gap:3px}
   .tg{font-size:9px}
-
-  /* Feature table — horizontal scroll so columns stay readable */
-  .ftbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:.875rem}
+  .ftbl-wrap{overflow-x:auto;margin-bottom:.875rem}
   table{min-width:380px;table-layout:fixed}
   col.c0{width:48%}col.c1,col.c2,col.c3,col.c4{width:13%}
   thead th{font-size:8.5px;padding:6px 2px}
   tbody td:first-child{font-size:10px;padding-left:8px}
   tbody td{padding:5px 2px}
-
-  /* Legend — tighter wrap */
   .legend{gap:6px;margin-bottom:.625rem}
-
-  /* Notes panel — full width below content */
-  .notes{
-    width:100%;border-left:none;
-    border-top:1px solid #E8E4F0;
-    padding:.875rem 1rem 1.25rem;
-    background:#FAFAFA
-  }
+  .notes{width:100%;border-left:none;border-top:1px solid #E8E4F0;padding:.875rem 1rem 1.25rem;background:#FAFAFA}
   .notes-inner{position:static}
   .notes-hdr{margin-bottom:8px}
-  .ins{border-radius:10px}
   .ins-num{font-size:15px}
   .ins-bullets li{font-size:11px}
 }
@@ -200,12 +186,14 @@ tbody td.dj{background:rgba(107,76,154,0.04)}
     <button class="upill" data-u="5">5</button>
   </div>
   <span class="user-note">+$50/mo per additional user on DripJobs</span>
+
+  <div class="nav-lbl">Add-Ons</div>
+  <div id="addon-section"></div>
 </div>
 
 <!-- MAIN CONTENT -->
 <div class="main">
 
-  <!-- Scrollable center column -->
   <div class="content">
     <div class="sect-lbl">Monthly cost — comparable feature set</div>
     <div class="bars" id="bars"></div>
@@ -241,54 +229,56 @@ tbody td.dj{background:rgba(107,76,154,0.04)}
   </div>
 
 </div>
-
 </div>
 
 <script>
 const DJ_PER=50,PS_PER=99;
+
 const PLANS={
-  pro:    {base:97, label:"DripJobs Pro",              cls:"hi",     insCls:"purple"},
-  adv:    {base:147,label:"DripJobs Advanced", cls:"hi-leg", insCls:"mid"},
-  growth: {base:197,label:"DripJobs Growth",            cls:"hi",     insCls:"purple"},
-  scale:  {base:297,label:"DripJobs Scale",             cls:"hi",     insCls:"purple"},
+  pro:    {base:97,  label:"DripJobs Pro",      cls:"hi",     insCls:"purple"},
+  adv:    {base:147, label:"DripJobs Advanced",  cls:"hi-leg", insCls:"mid"},
+  growth: {base:197, label:"DripJobs Growth",    cls:"hi",     insCls:"purple"},
+  scale:  {base:297, label:"DripJobs Scale",     cls:"hi",     insCls:"purple"},
 };
+
 const PLAN_NOTES={
   pro:    "Core CRM · email pipeline · 40+ email drips · proposals · invoicing · scheduling · crew · mobile app",
   adv:    "Full CRM + SMS drips · email blasts · change orders · Google Calendar · Zapier · financing",
   growth: "Everything in Advanced + DripJobs Chat + Job Costing bundled",
   scale:  "Everything bundled — Chat · Job Costing · Jobi AI · Production Rates",
 };
-const FEATS=[
-  {f:"Automated email drip sequences",       dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"y",jb:"n",hs:"n",a:{}},
-  {f:"SMS drip sequences",                   dj:{pro:"n",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"n",hs:"n",a:{}},
-  {f:"Email blast marketing",                dj:{pro:"n",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"p",hs:"p",a:{}},
-  {f:"Change orders",                        dj:{pro:"n",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"p",hs:"n",a:{}},
-  {f:"Google Calendar sync",                 dj:{pro:"n",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"n",hs:"n",a:{}},
-  {f:"Zapier integration",                   dj:{pro:"n",adv:"y",growth:"y",scale:"y"},         ps:"y",jb:"y",hs:"y",a:{}},
-  {f:"Financing (Acorn Finance)",            dj:{pro:"n",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"n",hs:"n",a:{}},
-  {f:"Production rate estimating",           dj:{pro:"addon",adv:"addon",growth:"addon",scale:"bundle"},ps:"y",jb:"n",hs:"n",a:{pro:"add-on",adv:"$99/mo",growth:"$99/mo",scale:""}},
-  {f:"Job costing",                          dj:{pro:"addon",adv:"addon",growth:"bundle",scale:"bundle"},ps:"n",jb:"p",hs:"n",a:{pro:"add-on",adv:"$49/mo",growth:"",scale:""}},
-  {f:"Two-way SMS texting (Chat)",           dj:{pro:"n",adv:"addon",growth:"bundle",scale:"bundle"},  ps:"n",jb:"n",hs:"n",a:{pro:"",adv:"$25/mo",growth:"",scale:""}},
-  {f:"AI assistant (Jobi AI)",               dj:{pro:"addon",adv:"addon",growth:"addon",scale:"bundle"},ps:"n",jb:"n",hs:"n",a:{pro:"add-on",adv:"$39/mo",growth:"$39/mo",scale:""}},
-  {f:"Good-Better-Best package pricing",     dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"p",hs:"n",a:{}},
-  {f:"Proposals + e-signatures",             dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"y",jb:"y",hs:"n",a:{}},
-  {f:"Native mobile app",                    dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"y",hs:"y",a:{}},
-  {f:"Crew assignment + management",         dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"y",hs:"n",a:{}},
-  {f:"ACH payments + deposits",              dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"n",hs:"n",a:{}},
-  {f:"Booking form + pipeline automation",   dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"p",jb:"p",hs:"n",a:{}},
-  {f:"Additional users",                     dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"y",jb:"y",hs:"y",note:"DJ $50 · PS $99 · JB varies",a:{}},
-  {f:"No annual contract",                   dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"y",hs:"p",a:{}},
-  {f:"Built for painting contractors",       dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"y",jb:"n",hs:"n",a:{}},
+
+// Add-ons available as line-item purchases (plans where they're an add-on, not bundled)
+const ADDONS=[
+  {id:'prod', label:'Production Rates', price:99, plans:['pro','adv','growth']},
+  {id:'cost', label:'Job Costing',      price:49, plans:['pro','adv']},
+  {id:'chat', label:'DJ Chat',          price:25, plans:['adv']},
+  {id:'jobi', label:'Jobi AI',          price:39, plans:['pro','adv','growth']},
 ];
-function icDJ(f,k){
-  const v=f.dj[k];
-  if(v==="y") return '<span class="y">✓</span>';
-  if(v==="n") return '<span class="n">✗</span>';
-  if(v==="bundle") return '<span class="bundle"><span class="bundle-check">✓</span><span class="bundle-lbl">bundled</span></span>';
-  if(v==="addon"){const n=f.a[k]||"add-on";return`<span class="addon-pill">+${n}</span>`;}
-  return '<span class="p">~</span>';
-}
-function icR(v){return v==="y"?'<span class="y">✓</span>':v==="n"?'<span class="n">✗</span>':'<span class="p">~</span>';}
+
+const FEATS=[
+  {f:"Automated email drip sequences",     dj:{pro:"y",adv:"y",growth:"y",scale:"y"},       ps:"y",jb:"n",hs:"n",a:{}},
+  {f:"SMS drip sequences",                 dj:{pro:"n",adv:"y",growth:"y",scale:"y"},       ps:"n",jb:"n",hs:"n",a:{}},
+  {f:"Email blast marketing",              dj:{pro:"n",adv:"y",growth:"y",scale:"y"},       ps:"n",jb:"p",hs:"p",a:{}},
+  {f:"Change orders",                      dj:{pro:"n",adv:"y",growth:"y",scale:"y"},       ps:"n",jb:"p",hs:"n",a:{}},
+  {f:"Google Calendar sync",               dj:{pro:"n",adv:"y",growth:"y",scale:"y"},       ps:"n",jb:"n",hs:"n",a:{}},
+  {f:"Zapier integration",                 dj:{pro:"n",adv:"y",growth:"y",scale:"y"},       ps:"y",jb:"y",hs:"y",a:{}},
+  {f:"Financing (Acorn Finance)",          dj:{pro:"n",adv:"y",growth:"y",scale:"y"},       ps:"n",jb:"n",hs:"n",a:{}},
+  {f:"Production rate estimating",         dj:{pro:"addon",adv:"addon",growth:"addon",scale:"bundle"},ps:"y",jb:"n",hs:"n",addonId:"prod",a:{pro:"add-on",adv:"$99/mo",growth:"$99/mo",scale:""}},
+  {f:"Job costing",                        dj:{pro:"addon",adv:"addon",growth:"bundle",scale:"bundle"},ps:"n",jb:"p",hs:"n",addonId:"cost",a:{pro:"add-on",adv:"$49/mo",growth:"",scale:""}},
+  {f:"Two-way SMS texting (Chat)",         dj:{pro:"n",adv:"addon",growth:"bundle",scale:"bundle"},  ps:"n",jb:"n",hs:"n",addonId:"chat",a:{pro:"",adv:"$25/mo",growth:"",scale:""}},
+  {f:"AI assistant (Jobi AI)",             dj:{pro:"addon",adv:"addon",growth:"addon",scale:"bundle"},ps:"n",jb:"n",hs:"n",addonId:"jobi",a:{pro:"add-on",adv:"$39/mo",growth:"$39/mo",scale:""}},
+  {f:"Good-Better-Best package pricing",   dj:{pro:"y",adv:"y",growth:"y",scale:"y"},       ps:"n",jb:"p",hs:"n",a:{}},
+  {f:"Proposals + e-signatures",           dj:{pro:"y",adv:"y",growth:"y",scale:"y"},       ps:"y",jb:"y",hs:"n",a:{}},
+  {f:"Native mobile app",                  dj:{pro:"y",adv:"y",growth:"y",scale:"y"},       ps:"n",jb:"y",hs:"y",a:{}},
+  {f:"Crew assignment + management",       dj:{pro:"y",adv:"y",growth:"y",scale:"y"},       ps:"n",jb:"y",hs:"n",a:{}},
+  {f:"ACH payments + deposits",            dj:{pro:"y",adv:"y",growth:"y",scale:"y"},       ps:"n",jb:"n",hs:"n",a:{}},
+  {f:"Booking form + pipeline automation", dj:{pro:"y",adv:"y",growth:"y",scale:"y"},       ps:"p",jb:"p",hs:"n",a:{}},
+  {f:"Additional users",                   dj:{pro:"y",adv:"y",growth:"y",scale:"y"},       ps:"y",jb:"y",hs:"y",note:"DJ $50 · PS $99 · JB varies",a:{}},
+  {f:"No annual contract",                 dj:{pro:"y",adv:"y",growth:"y",scale:"y"},       ps:"n",jb:"y",hs:"p",a:{}},
+  {f:"Built for painting contractors",     dj:{pro:"y",adv:"y",growth:"y",scale:"y"},       ps:"y",jb:"n",hs:"n",a:{}},
+];
+
 const RIVALS={
   pro:[
     {name:"PaintScout + CRM add-on",base1:148,perUser:PS_PER,tags:[{t:"e",l:"+$49/mo CRM add-on"},{t:"m",l:"No automated drips"},{t:"m",l:"No mobile app"},{t:"m",l:"No crew management"},{t:"m",l:"No change orders"}],vs:"$51 more — manual pipeline, no drips."},
@@ -311,24 +301,101 @@ const RIVALS={
     {name:"HubSpot Professional",base1:1300,perUser:50,tags:[{t:"e",l:"$1,300+/mo suite"},{t:"e",l:"$4,500 onboarding fee"},{t:"w",l:"6 seats included, +$50 after"}],vs:"4.4× more expensive — enterprise tool, not for painters."},
   ],
 };
-function djTotal(k,u){return PLANS[k].base+Math.max(0,u-1)*DJ_PER;}
+
+// ── State ─────────────────────────────────────────────
+let P='pro', U=1, ACTIVE=new Set();
+
+// ── Pricing helpers ───────────────────────────────────
+function djBase(k,u){return PLANS[k].base+Math.max(0,u-1)*DJ_PER;}
 function rTotal(r,u){return r.base1+Math.max(0,u-1)*r.perUser;}
-function bd(k,u){return u===1?'':`$${PLANS[k].base}+${u-1}×$${DJ_PER}`;}
+function activeAddonCost(k){
+  return ADDONS.filter(a=>ACTIVE.has(a.id)&&a.plans.includes(k)).reduce((s,a)=>s+a.price,0);
+}
+function djTotal(k,u){return djBase(k,u)+activeAddonCost(k);}
+
+function bd(k,u){
+  const addCost=activeAddonCost(k);
+  const base=PLANS[k].base;
+  let s=u===1?'':`$${base}+${u-1}×$${DJ_PER}`;
+  if(addCost>0){
+    const names=ADDONS.filter(a=>ACTIVE.has(a.id)&&a.plans.includes(k)).map(a=>a.label).join(' + ');
+    s=(s?s+' ':'')+'+ '+names;
+  }
+  return s;
+}
 function rbd(r,u){if(u===1||r.perUser===0)return r.perUser===0&&u>1?'seat allowance included':'';return`$${r.base1}+${u-1}×$${r.perUser}`;}
 
+// ── Icon helpers ──────────────────────────────────────
+function icDJ(f,k){
+  const v=f.dj[k];
+  if(v==="y") return '<span class="y">✓</span>';
+  if(v==="n") return '<span class="n">✗</span>';
+  if(v==="bundle") return '<span class="bundle"><span class="bundle-check">✓</span><span class="bundle-lbl">bundled</span></span>';
+  if(v==="addon"){
+    if(f.addonId && ACTIVE.has(f.addonId)){
+      return '<span class="added-pill"><span class="added-check">✓</span><span class="added-lbl">added</span></span>';
+    }
+    const n=f.a[k]||"add-on";
+    return`<span class="addon-pill">+${n}</span>`;
+  }
+  return '<span class="p">~</span>';
+}
+function icR(v){return v==="y"?'<span class="y">✓</span>':v==="n"?'<span class="n">✗</span>':'<span class="p">~</span>';}
+
+// ── Render: Add-on toggles ────────────────────────────
+function renderAddons(k){
+  const el=document.getElementById('addon-section');
+  const available=ADDONS.filter(a=>a.plans.includes(k));
+  if(available.length===0){
+    el.innerHTML='<span class="addon-bundled">All add-ons bundled in Scale</span>';
+    return;
+  }
+  el.innerHTML='<div class="addon-toggles">'+available.map(a=>{
+    const on=ACTIVE.has(a.id);
+    return`<button class="addon-btn${on?' on':''}" data-addon="${a.id}">
+      <span class="addon-btn-name">${a.label}</span>
+      <span style="display:flex;align-items:center;gap:2px">
+        <span class="addon-btn-price">+$${a.price}/mo</span>
+        <span class="addon-btn-check">✓</span>
+      </span>
+    </button>`;
+  }).join('')+'</div>';
+
+  el.querySelectorAll('.addon-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const id=btn.dataset.addon;
+      if(ACTIVE.has(id)) ACTIVE.delete(id); else ACTIVE.add(id);
+      render();
+    });
+  });
+}
+
+// ── Render: Bars ──────────────────────────────────────
 function renderBars(k,u){
   const pl=PLANS[k],rv=RIVALS[k],djP=djTotal(k,u);
+  const addCost=activeAddonCost(k);
   const allPrices=[djP,...rv.map(r=>rTotal(r,u))];
   const minP=Math.min(...allPrices),maxP=Math.max(...allPrices);
   const mx=maxP*1.08;
   function priceClass(p){return p===minP?'best':p===maxP?'worst':'';}
+
+  // Add-on breakdown line
+  let addonLine='';
+  if(addCost>0){
+    const breakdown=ADDONS.filter(a=>ACTIVE.has(a.id)&&a.plans.includes(k))
+      .map(a=>`${a.label} +$${a.price}`).join(' · ');
+    addonLine=`<div class="br-addon-line">+ ${breakdown}</div>`;
+  }
+
   let h=`<div class="br ${pl.cls}">
     <div class="br-top"><span class="br-name">${pl.label}</span>
       <div class="br-right"><span class="br-price ${priceClass(djP)}">$${djP}/mo</span><span class="br-bd">${bd(k,u)}</span></div>
     </div>
+    ${addonLine}
     <div class="track"><div class="fill" style="width:${(djP/mx*100).toFixed(1)}%"></div></div>
     <div class="tags"><span class="tg ok">${PLAN_NOTES[k]}</span></div>
   </div>`;
+
   rv.forEach(r=>{
     const rP=rTotal(r,u);
     h+=`<div class="br">
@@ -343,6 +410,7 @@ function renderBars(k,u){
   document.getElementById('bars').innerHTML=h;
 }
 
+// ── Render: Feature table ─────────────────────────────
 function renderTable(k){
   const names={pro:'DripJobs Pro',adv:'DripJobs Advanced',growth:'DripJobs Growth',scale:'DripJobs Scale'};
   const hdr=document.getElementById('dj-hdr');
@@ -355,55 +423,82 @@ function renderTable(k){
   </tr>`).join('');
 }
 
+// ── Render: Bottom line ───────────────────────────────
 function renderIns(k,u){
-  const djP=djTotal(k,u),rv=RIVALS[k];
+  const djP=djTotal(k,u), rv=RIVALS[k];
+  const addCost=activeAddonCost(k);
+  const activeNames=ADDONS.filter(a=>ACTIVE.has(a.id)&&a.plans.includes(k)).map(a=>a.label);
   const maxRP=Math.max(...rv.map(r=>rTotal(r,u)));
   const el=document.getElementById('ins');
   el.className='ins '+PLANS[k].insCls;
   const sav=maxRP-djP;
   const num=sav>0?`Save $${sav.toLocaleString()}/mo vs top competitor`:`$${djP}/mo · ${u} user${u>1?'s':''}`;
+
   let bullets=[];
+
   if(k==='pro'){
     const psP=rTotal(rv[0],u);
     bullets=[
-      `$${djP}/mo undercuts PaintScout+CRM ($${psP}/mo) by $${psP-djP}`,
-      'Automated pipeline + 40+ email drips included',
-      'Mobile app + crew management built in',
-      'Upgrade to Advanced ($147) → SMS drips, email blasts, change orders, Zapier, financing',
+      {t:`$${djP}/mo vs PaintScout+CRM $${psP}/mo — $${Math.abs(psP-djP)} ${djP<psP?'cheaper':'more'}`,hi:djP<psP},
+      {t:'Automated pipeline + 40+ email drips included'},
+      {t:'Mobile app + crew management built in'},
     ];
+    if(addCost>0) bullets.push({t:`Add-ons included: ${activeNames.join(', ')} (+$${addCost}/mo)`,hi:true});
+    bullets.push({t:'Upgrade to Advanced ($147) → SMS drips, email blasts, change orders, Zapier, financing'});
   } else if(k==='adv'){
     const psP=rTotal(rv[0],u),jbP=rTotal(rv[1],u);
     bullets=[
-      u>=2?`At ${u} users: $${djP}/mo vs PaintScout+CRM $${psP}/mo — $${psP-djP} cheaper`:`$${djP}/mo vs PaintScout+CRM $${psP}/mo`,
-      'Automated pipeline, 40+ drip sequences, change orders',
-      'Google Calendar sync + Zapier + Acorn financing',
-      'Crew management + mobile app included',
-      `Beats Jobber Connect ($${jbP}/mo) — Jobber has no pipeline, no drips`,
+      {t:u>=2?`At ${u} users: $${djP}/mo vs PaintScout+CRM $${psP}/mo — $${Math.abs(psP-djP)} ${djP<psP?'cheaper':'more'}`:`$${djP}/mo vs PaintScout+CRM $${psP}/mo`,hi:djP<psP},
+      {t:'Automated pipeline, 40+ drip sequences, change orders'},
+      {t:'Google Calendar sync + Zapier + Acorn financing'},
     ];
+    if(addCost>0) bullets.push({t:`Add-ons active: ${activeNames.join(', ')} (+$${addCost}/mo)`,hi:true});
+    bullets.push({t:`Beats Jobber Connect ($${jbP}/mo) — no pipeline, no drips`});
   } else if(k==='growth'){
-    const hsP=rTotal(rv[2],u),psP=rTotal(rv[0],u);
+    const hsP=rTotal(rv[2],u);
     bullets=[
-      `HubSpot Pro (comparable automation): $${hsP.toLocaleString()}/mo`,
-      `DripJobs Growth: $${djP}/mo — ${Math.round(hsP/djP*10)/10}× cheaper`,
-      'DJ Chat + job costing bundled — no add-on fees',
-      'No setup fees, no annual contract',
+      {t:`HubSpot Pro (comparable automation): $${hsP.toLocaleString()}/mo`},
+      {t:`DripJobs Growth: $${djP}/mo — ${Math.round(hsP/djP*10)/10}× cheaper`,hi:true},
+      {t:'DJ Chat + job costing bundled — no add-on fees'},
     ];
+    if(addCost>0) bullets.push({t:`Add-ons active: ${activeNames.join(', ')} (+$${addCost}/mo)`,hi:true});
+    bullets.push({t:'No setup fees, no annual contract'});
   } else {
     const jbP=rTotal(rv[1],u),hsP=rTotal(rv[2],u);
     bullets=[
-      `Jobber Plus+Campaigns: $${jbP.toLocaleString()}/mo`,
-      `HubSpot Professional: $${hsP.toLocaleString()}/mo`,
-      `DripJobs Scale: $${djP}/mo — everything bundled`,
-      'No add-on stacking, no contracts, no $4,500 onboarding fee',
+      {t:`Jobber Plus+Campaigns: $${jbP.toLocaleString()}/mo`},
+      {t:`HubSpot Professional: $${hsP.toLocaleString()}/mo`},
+      {t:`DripJobs Scale: $${djP}/mo — everything bundled`,hi:true},
+      {t:'No add-on stacking, no contracts, no $4,500 onboarding fee'},
     ];
   }
-  const li=bullets.map(b=>`<li>${b}</li>`).join('');
+
+  const li=bullets.map(b=>`<li${b.hi?' class="hi"':''}>${b.t}</li>`).join('');
   el.innerHTML=`<div class="ins-lbl">${u} user${u>1?'s':''}</div><div class="ins-num">${num}</div><ul class="ins-bullets">${li}</ul>`;
 }
 
-let P='pro',U=1;
-function render(){renderBars(P,U);renderTable(P);renderIns(P,U);}
-document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');P=t.dataset.s;render();}));
-document.querySelectorAll('.upill').forEach(p=>p.addEventListener('click',()=>{document.querySelectorAll('.upill').forEach(x=>x.classList.remove('on'));p.classList.add('on');U=parseInt(p.dataset.u);render();}));
+// ── Master render ─────────────────────────────────────
+function render(){
+  renderAddons(P);
+  renderBars(P,U);
+  renderTable(P);
+  renderIns(P,U);
+}
+
+// ── Event listeners ───────────────────────────────────
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');
+  P=t.dataset.s;
+  ACTIVE.clear(); // reset add-ons on plan switch
+  render();
+}));
+document.querySelectorAll('.upill').forEach(p=>p.addEventListener('click',()=>{
+  document.querySelectorAll('.upill').forEach(x=>x.classList.remove('on'));
+  p.classList.add('on');
+  U=parseInt(p.dataset.u);
+  render();
+}));
+
 render();
 </script>
