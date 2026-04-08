@@ -43,6 +43,8 @@ h1{font-size:15px;font-weight:700;margin-bottom:4px;line-height:1.3;color:#1A152
 .br-price{font-size:13px;font-weight:700;color:#3A3060;display:block}
 .br.hi .br-price{color:#6B4C9A}
 .br.hi-leg .br-price{color:#8B70B8}
+.br-price.best{color:#16A34A !important}
+.br-price.worst{color:#DC2626 !important}
 .br-bd{font-size:9px;color:#9090A8;display:block}
 .track{height:6px;background:#EDE9F5;border-radius:3px;overflow:hidden}
 .fill{height:100%;border-radius:3px;background:#C4B8DC;width:0;transition:width .55s cubic-bezier(.4,0,.2,1)}
@@ -232,10 +234,13 @@ function rbd(r,u){if(u===1||r.perUser===0)return r.perUser===0&&u>1?'seat allowa
 
 function renderBars(k,u){
   const pl=PLANS[k],rv=RIVALS[k],djP=djTotal(k,u);
-  const mx=Math.max(djP,...rv.map(r=>rTotal(r,u)))*1.08;
+  const allPrices=[djP,...rv.map(r=>rTotal(r,u))];
+  const minP=Math.min(...allPrices),maxP=Math.max(...allPrices);
+  const mx=maxP*1.08;
+  function priceClass(p){return p===minP?'best':p===maxP?'worst':'';}
   let h=`<div class="br ${pl.cls}">
     <div class="br-top"><span class="br-name">${pl.label}</span>
-      <div class="br-right"><span class="br-price">$${djP}/mo</span><span class="br-bd">${bd(k,u)}</span></div>
+      <div class="br-right"><span class="br-price ${priceClass(djP)}">$${djP}/mo</span><span class="br-bd">${bd(k,u)}</span></div>
     </div>
     <div class="track"><div class="fill" style="width:${(djP/mx*100).toFixed(1)}%"></div></div>
     <div class="tags"><span class="tg ok">${PLAN_NOTES[k]}</span></div>
@@ -244,7 +249,7 @@ function renderBars(k,u){
     const rP=rTotal(r,u);
     h+=`<div class="br">
       <div class="br-top"><span class="br-name">${r.name}</span>
-        <div class="br-right"><span class="br-price">$${rP.toLocaleString()}/mo</span><span class="br-bd">${rbd(r,u)}</span></div>
+        <div class="br-right"><span class="br-price ${priceClass(rP)}">$${rP.toLocaleString()}/mo</span><span class="br-bd">${rbd(r,u)}</span></div>
       </div>
       <div class="track"><div class="fill" style="width:${Math.min((rP/mx)*100,100).toFixed(1)}%"></div></div>
       <div class="tags">${r.tags.map(t=>`<span class="tg ${t.t}">${t.l}</span>`).join('')}</div>
