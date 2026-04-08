@@ -25,6 +25,14 @@ h1{font-size:15px;font-weight:700;margin-bottom:4px;line-height:1.3;color:#1A152
 .nav-lbl{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#9090A8;margin-bottom:6px;margin-top:1rem}
 .nav-lbl:first-of-type{margin-top:0}
 
+/* Pricing mode toggle */
+.mode-toggle{display:flex;background:#EDEAF5;border-radius:10px;padding:3px;gap:2px;margin-bottom:14px}
+.mtab{flex:1;font-size:10px;font-weight:600;padding:5px 4px;border-radius:7px;border:none;cursor:pointer;transition:all .18s;color:#6B6090;background:transparent;line-height:1.3;text-align:center}
+.mtab.on{background:#fff;color:#6B4C9A;box-shadow:0 1px 3px rgba(107,76,154,.15)}
+.mode-badge{display:inline-block;font-size:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:1px 5px;border-radius:4px;margin-left:3px;vertical-align:middle}
+.mode-badge.new{background:#F0FDF4;color:#16A34A}
+.mode-badge.cur{background:#F0EAFF;color:#6B4C9A}
+
 /* Plan tabs — vertical in sidebar */
 .tabs{display:flex;flex-direction:column;gap:3px;margin-bottom:0}
 .tab{background:#F5F4F8;border:1px solid #E0DCF0;color:#6B6090;font-size:11px;font-weight:500;padding:7px 10px;border-radius:8px;cursor:pointer;transition:all .15s;text-align:left;width:100%;line-height:1.3}
@@ -181,25 +189,31 @@ tbody td.dj{background:rgba(107,76,154,0.04)}
 <!-- LEFT SIDEBAR -->
 <div class="sidebar">
   <img src="logo.png" alt="DripJobs" class="logo">
-  <div class="badge"><i></i>Value Analysis</div>
+
+  <div class="mode-toggle" id="mode-toggle">
+    <button type="button" class="mtab on" data-m="current">Current<span class="mode-badge cur">Live</span></button>
+    <button type="button" class="mtab" data-m="new">New Pricing<span class="mode-badge new">Upcoming</span></button>
+  </div>
+
+  <div class="badge"><i></i><span id="mode-label">Current Pricing</span></div>
   <h1>What do you actually get for your money?</h1>
   <p class="sub">Select a plan and team size to compare.</p>
 
   <div class="nav-lbl">Plan</div>
   <div class="tabs" id="tabs">
-    <button class="tab on" data-s="pro">Pro — $97/mo</button>
-    <button class="tab leg" data-s="adv">Advanced — $147/mo</button>
-    <button class="tab" data-s="growth">Growth — $197/mo</button>
-    <button class="tab" data-s="scale">Scale — $297/mo</button>
+    <button type="button" class="tab on" data-s="pro">Pro — $97/mo</button>
+    <button type="button" class="tab leg" data-s="adv" id="tab-adv">Advanced — $147/mo</button>
+    <button type="button" class="tab" data-s="growth">Growth — $197/mo</button>
+    <button type="button" class="tab" data-s="scale">Scale — $297/mo</button>
   </div>
 
   <div class="nav-lbl">Team size</div>
   <div class="upills" id="upills">
-    <button class="upill on" data-u="1">1</button>
-    <button class="upill" data-u="2">2</button>
-    <button class="upill" data-u="3">3</button>
-    <button class="upill" data-u="4">4</button>
-    <button class="upill" data-u="5">5</button>
+    <button type="button" class="upill on" data-u="1">1</button>
+    <button type="button" class="upill" data-u="2">2</button>
+    <button type="button" class="upill" data-u="3">3</button>
+    <button type="button" class="upill" data-u="4">4</button>
+    <button type="button" class="upill" data-u="5">5</button>
   </div>
   <span class="user-note">+$50/mo per additional user on DripJobs</span>
 
@@ -332,7 +346,7 @@ const RIVALS={
 };
 
 // ── State ─────────────────────────────────────────────
-let P='pro', U=1, V='monthly', ACTIVE=new Set();
+let P='pro', U=1, V='monthly', M='current', ACTIVE=new Set();
 
 // ── Pricing helpers ───────────────────────────────────
 function djBase(k,u){return PLANS[k].base+Math.max(0,u-1)*DJ_PER;}
@@ -556,8 +570,24 @@ function renderIns(k,u){
   el.innerHTML=`<div class="ins-lbl">${u} user${u>1?'s':''}</div><div class="ins-num">${num}</div><ul class="ins-bullets">${li}</ul>`;
 }
 
+// ── Render: Plan tabs (mode-aware) ────────────────────
+function renderTabs(){
+  const advTab=document.getElementById('tab-adv');
+  const isNew=M==='new';
+  advTab.style.display=isNew?'none':'';
+  document.getElementById('mode-label').textContent=isNew?'New Pricing Tiers':'Current Pricing';
+  // If Advanced is selected and we switch to new pricing, fall back to Pro
+  if(isNew&&P==='adv'){
+    P='pro';
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    document.querySelector('.tab[data-s="pro"]').classList.add('on');
+    ACTIVE.clear();
+  }
+}
+
 // ── Master render ─────────────────────────────────────
 function render(){
+  renderTabs();
   renderAddons(P);
   renderBars(P,U);
   renderTable(P);
@@ -565,6 +595,13 @@ function render(){
 }
 
 // ── Event listeners ───────────────────────────────────
+document.querySelectorAll('.mtab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.mtab').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');
+  M=t.dataset.m;
+  ACTIVE.clear();
+  render();
+}));
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
   t.classList.add('on');
