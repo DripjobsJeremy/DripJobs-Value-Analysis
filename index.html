@@ -67,6 +67,22 @@ h1{font-size:15px;font-weight:700;margin-bottom:4px;line-height:1.3;color:#1A152
 .br-price.worst{color:#DC2626 !important}
 .br-bd{font-size:9px;color:#9090A8;display:block}
 .br-addon-line{font-size:9px;color:#16A34A;font-weight:600;margin-top:2px}
+
+/* View toggle (Monthly / First-year) */
+.view-toggle{display:flex;gap:3px;margin-bottom:.75rem}
+.vtab{background:#F5F4F8;border:1px solid #E0DCF0;color:#6B6090;font-size:10px;font-weight:500;padding:4px 11px;border-radius:20px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.vtab.on{background:#3A3060;border-color:#3A3060;color:#fff}
+.br-setup{font-size:9px;color:#DC2626;font-weight:600;margin-top:2px}
+
+/* Setup fee table cells */
+.setup-free{color:#16A34A;font-size:10px;font-weight:700}
+.setup-opt{color:#6B6090;font-size:9px;line-height:1.4}
+.setup-req{color:#DC2626;font-size:9px;line-height:1.4;font-weight:600}
+.setup-row td{background:#FFF8F8 !important;border-top:1px solid #F0DCF0 !important}
+.setup-row td:first-child{color:#1A1525 !important}
+.setup-row td.dj{background:#F0FDF4 !important}
+.bars-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.bars-hdr .sect-lbl{margin-bottom:0}
 .track{height:6px;background:#EDE9F5;border-radius:3px;overflow:hidden;margin-top:2px}
 .fill{height:100%;border-radius:3px;background:#C4B8DC;width:0;transition:width .55s cubic-bezier(.4,0,.2,1)}
 .br.hi .fill{background:#6B4C9A}
@@ -195,7 +211,13 @@ tbody td.dj{background:rgba(107,76,154,0.04)}
 <div class="main">
 
   <div class="content">
-    <div class="sect-lbl">Monthly cost — comparable feature set</div>
+    <div class="bars-hdr">
+      <div class="sect-lbl" id="bars-lbl">Monthly cost — comparable feature set</div>
+      <div class="view-toggle" id="view-toggle">
+        <button type="button" class="vtab on" data-v="monthly">Monthly</button>
+        <button type="button" class="vtab" data-v="firstyear">First-year total</button>
+      </div>
+    </div>
     <div class="bars" id="bars"></div>
 
     <div class="sect-lbl">Feature comparison — selected plan vs competitors</div>
@@ -277,45 +299,64 @@ const FEATS=[
   {f:"Additional users",                   dj:{pro:"y",adv:"y",growth:"y",scale:"y"},       ps:"y",jb:"y",hs:"y",note:"DJ $50 · PS $99 · JB varies",a:{}},
   {f:"No annual contract",                 dj:{pro:"y",adv:"y",growth:"y",scale:"y"},       ps:"n",jb:"y",hs:"p",a:{}},
   {f:"Built for painting contractors",     dj:{pro:"y",adv:"y",growth:"y",scale:"y"},       ps:"y",jb:"n",hs:"n",a:{}},
+  {f:"Setup / onboarding fee",             dj:{pro:"free",adv:"free",growth:"free",scale:"free"}, setupRow:true,
+    psNote:"Free (paid tiers $999–$1,999 optional)",
+    jbNote:"None — plug & play",
+    hsNote:{pro:"None at Starter",adv:"None at Starter",growth:"~$3,000 mandatory",scale:"~$4,500–$7,000 mandatory"},
+    a:{}},
 ];
 
+// setupFee: one-time onboarding cost (0 = none, null = optional/varies)
+// setupNote: short label shown in first-year mode and feature table
 const RIVALS={
   pro:[
-    {name:"PaintScout + CRM add-on",base1:148,perUser:PS_PER,tags:[{t:"e",l:"+$49/mo CRM add-on"},{t:"m",l:"No automated drips"},{t:"m",l:"No mobile app"},{t:"m",l:"No crew management"},{t:"m",l:"No change orders"}],vs:"$51 more — manual pipeline, no drips."},
-    {name:"Jobber Connect",base1:129,perUser:29,tags:[{t:"m",l:"No pipeline (needs $599/mo Plus)"},{t:"m",l:"No drip sequences"},{t:"m",l:"No production rates"}],vs:"Similar price — no pipeline, no automation."},
-    {name:"HubSpot Starter",base1:50,perUser:20,tags:[{t:"m",l:"No production rates"},{t:"m",l:"No contractor pipeline"},{t:"w",l:"Real automation needs $1,300+/mo"}],vs:"Cheap — generic CRM, no contractor tools."},
+    {name:"PaintScout + CRM add-on",base1:148,perUser:PS_PER,setupFee:0,setupNote:"Free onboarding (paid tiers optional: $999–$1,999)",tags:[{t:"e",l:"+$49/mo CRM add-on"},{t:"m",l:"No automated drips"},{t:"m",l:"No mobile app"},{t:"m",l:"No crew management"},{t:"m",l:"No change orders"}],vs:"$51 more — manual pipeline, no drips."},
+    {name:"Jobber Connect",base1:129,perUser:29,setupFee:0,setupNote:"No setup fee — fastest to start",tags:[{t:"m",l:"No pipeline (needs $599/mo Plus)"},{t:"m",l:"No drip sequences"},{t:"m",l:"No production rates"}],vs:"Similar price — no pipeline, no automation."},
+    {name:"HubSpot Starter",base1:50,perUser:20,setupFee:0,setupNote:"No mandatory fee at Starter tier",tags:[{t:"m",l:"No production rates"},{t:"m",l:"No contractor pipeline"},{t:"w",l:"Real automation needs $1,300+/mo"}],vs:"Cheap — generic CRM, no contractor tools."},
   ],
   adv:[
-    {name:"PaintScout + CRM add-on",base1:148,perUser:PS_PER,tags:[{t:"e",l:"+$49/mo CRM add-on"},{t:"m",l:"No drip sequences"},{t:"m",l:"No mobile app"},{t:"m",l:"No crew management"},{t:"m",l:"No change orders"},{t:"m",l:"No financing"}],vs:"$1 cheaper at 1 user. At 2 users: $49 more with far fewer features."},
-    {name:"Jobber Connect",base1:129,perUser:29,tags:[{t:"m",l:"No pipeline (needs $599/mo Plus)"},{t:"m",l:"No drip sequences"},{t:"m",l:"No production rates"},{t:"m",l:"No change orders"}],vs:"$18 cheaper — no pipeline, no automation, no estimating."},
-    {name:"HubSpot Starter",base1:50,perUser:20,tags:[{t:"m",l:"No production rates"},{t:"m",l:"No contractor pipeline"},{t:"w",l:"Real automation needs $1,300+/mo"}],vs:"Much cheaper — generic CRM with none of the Advanced features."},
+    {name:"PaintScout + CRM add-on",base1:148,perUser:PS_PER,setupFee:0,setupNote:"Free onboarding (paid tiers optional: $999–$1,999)",tags:[{t:"e",l:"+$49/mo CRM add-on"},{t:"m",l:"No drip sequences"},{t:"m",l:"No mobile app"},{t:"m",l:"No crew management"},{t:"m",l:"No change orders"},{t:"m",l:"No financing"}],vs:"$1 cheaper at 1 user. At 2 users: $49 more with far fewer features."},
+    {name:"Jobber Connect",base1:129,perUser:29,setupFee:0,setupNote:"No setup fee — fastest to start",tags:[{t:"m",l:"No pipeline (needs $599/mo Plus)"},{t:"m",l:"No drip sequences"},{t:"m",l:"No production rates"},{t:"m",l:"No change orders"}],vs:"$18 cheaper — no pipeline, no automation, no estimating."},
+    {name:"HubSpot Starter",base1:50,perUser:20,setupFee:0,setupNote:"No mandatory fee at Starter tier",tags:[{t:"m",l:"No production rates"},{t:"m",l:"No contractor pipeline"},{t:"w",l:"Real automation needs $1,300+/mo"}],vs:"Much cheaper — generic CRM with none of the Advanced features."},
   ],
   growth:[
-    {name:"PaintScout + CRM + external SMS",base1:178,perUser:PS_PER,tags:[{t:"e",l:"+$49/mo CRM add-on"},{t:"e",l:"+$30/mo external SMS"},{t:"m",l:"No job costing"},{t:"m",l:"No drip sequences"}],vs:"Cheaper at 1 user — by 2 users DripJobs is better value."},
-    {name:"Jobber Connect + external SMS",base1:159,perUser:29,tags:[{t:"e",l:"+$30/mo third-party SMS"},{t:"m",l:"No pipeline"},{t:"m",l:"No drip sequences"},{t:"m",l:"No job costing"}],vs:"Cheaper — missing pipeline, drips, and job costing entirely."},
-    {name:"HubSpot Pro (for automation)",base1:1300,perUser:50,tags:[{t:"e",l:"$1,300/mo minimum"},{t:"e",l:"$4,500 onboarding fee"},{t:"m",l:"No production rates"},{t:"m",l:"Not built for contractors"}],vs:"6.6× more expensive — still missing contractor features."},
+    {name:"PaintScout + CRM + external SMS",base1:178,perUser:PS_PER,setupFee:0,setupNote:"Free onboarding (paid tiers optional: $999–$1,999)",tags:[{t:"e",l:"+$49/mo CRM add-on"},{t:"e",l:"+$30/mo external SMS"},{t:"m",l:"No job costing"},{t:"m",l:"No drip sequences"}],vs:"Cheaper at 1 user — by 2 users DripJobs is better value."},
+    {name:"Jobber Connect + external SMS",base1:159,perUser:29,setupFee:0,setupNote:"No setup fee — fastest to start",tags:[{t:"e",l:"+$30/mo third-party SMS"},{t:"m",l:"No pipeline"},{t:"m",l:"No drip sequences"},{t:"m",l:"No job costing"}],vs:"Cheaper — missing pipeline, drips, and job costing entirely."},
+    {name:"HubSpot Pro (for automation)",base1:1300,perUser:50,setupFee:3000,setupNote:"Mandatory ~$3,000 Sales Hub Pro onboarding",tags:[{t:"e",l:"$1,300/mo minimum"},{t:"e",l:"~$3,000 mandatory onboarding"},{t:"m",l:"No production rates"},{t:"m",l:"Not built for contractors"}],vs:"6.6× more expensive + $3,000 to even get started."},
   ],
   scale:[
-    {name:"PaintScout (fully loaded)",base1:209,perUser:PS_PER,tags:[{t:"e",l:"+$49/mo CRM add-on"},{t:"e",l:"+$30/mo SMS app"},{t:"m",l:"No job costing"},{t:"m",l:"No drip sequences"}],vs:"PS charges $99/user vs DripJobs $50 — gap grows with every user."},
-    {name:"Jobber Plus + Campaigns",base1:653,perUser:0,tags:[{t:"e",l:"$599/mo Plus for pipeline (beta)"},{t:"e",l:"+$29–79/mo campaigns add-on"},{t:"m",l:"No production rates"},{t:"m",l:"No AI assistant"}],vs:"2.2× more expensive — pipeline in beta, no automation."},
-    {name:"HubSpot Professional",base1:1300,perUser:50,tags:[{t:"e",l:"$1,300+/mo suite"},{t:"e",l:"$4,500 onboarding fee"},{t:"w",l:"6 seats included, +$50 after"}],vs:"4.4× more expensive — enterprise tool, not for painters."},
+    {name:"PaintScout (fully loaded)",base1:209,perUser:PS_PER,setupFee:0,setupNote:"Free onboarding (paid tiers optional: $999–$1,999)",tags:[{t:"e",l:"+$49/mo CRM add-on"},{t:"e",l:"+$30/mo SMS app"},{t:"m",l:"No job costing"},{t:"m",l:"No drip sequences"}],vs:"PS charges $99/user vs DripJobs $50 — gap grows with every user."},
+    {name:"Jobber Plus + Campaigns",base1:653,perUser:0,setupFee:0,setupNote:"No setup fee",tags:[{t:"e",l:"$599/mo Plus for pipeline (beta)"},{t:"e",l:"+$29–79/mo campaigns add-on"},{t:"m",l:"No production rates"},{t:"m",l:"No AI assistant"}],vs:"2.2× more expensive — pipeline in beta, no automation."},
+    {name:"HubSpot Professional",base1:1300,perUser:50,setupFee:4500,setupNote:"Mandatory ~$4,500 onboarding (up to $7,000+)",tags:[{t:"e",l:"$1,300+/mo suite"},{t:"e",l:"~$4,500 mandatory onboarding"},{t:"w",l:"6 seats included, +$50 after"}],vs:"4.4× more expensive + $4,500 just to get started."},
   ],
 };
 
 // ── State ─────────────────────────────────────────────
-let P='pro', U=1, ACTIVE=new Set();
+let P='pro', U=1, V='monthly', ACTIVE=new Set();
 
 // ── Pricing helpers ───────────────────────────────────
 function djBase(k,u){return PLANS[k].base+Math.max(0,u-1)*DJ_PER;}
-function rTotal(r,u){return r.base1+Math.max(0,u-1)*r.perUser;}
+function rMonthly(r,u){return r.base1+Math.max(0,u-1)*r.perUser;}
 function activeAddonCost(k){
   return ADDONS.filter(a=>ACTIVE.has(a.id)&&a.plans.includes(k)).reduce((s,a)=>s+a.price,0);
 }
-function djTotal(k,u){return djBase(k,u)+activeAddonCost(k);}
+function djTotal(k,u){
+  const mo=djBase(k,u)+activeAddonCost(k);
+  return V==='firstyear'?mo*12:mo;
+}
+function rTotal(r,u){
+  const mo=rMonthly(r,u);
+  return V==='firstyear'?mo*12+(r.setupFee||0):mo;
+}
+function fmt(n){return n>=1000?'$'+n.toLocaleString():('$'+n);}
 
 function bd(k,u){
   const addCost=activeAddonCost(k);
   const base=PLANS[k].base;
+  if(V==='firstyear'){
+    const yr=(djBase(k,u)+addCost)*12;
+    return addCost>0?`$${(djBase(k,u))*12}/yr base + add-ons`:`$${base}×12 mo${u>1?` + ${u-1}×$${DJ_PER}×12`:''}`;
+  }
   let s=u===1?'':`$${base}+${u-1}×$${DJ_PER}`;
   if(addCost>0){
     const names=ADDONS.filter(a=>ACTIVE.has(a.id)&&a.plans.includes(k)).map(a=>a.label).join(' + ');
@@ -323,11 +364,18 @@ function bd(k,u){
   }
   return s;
 }
-function rbd(r,u){if(u===1||r.perUser===0)return r.perUser===0&&u>1?'seat allowance included':'';return`$${r.base1}+${u-1}×$${r.perUser}`;}
+function rbd(r,u){
+  if(V==='firstyear'){
+    return r.setupFee>0?`incl. $${r.setupFee.toLocaleString()} onboarding fee`:(r.setupFee===0?'No setup fee':'');
+  }
+  if(u===1||r.perUser===0)return r.perUser===0&&u>1?'seat allowance included':'';
+  return`$${r.base1}+${u-1}×$${r.perUser}`;
+}
 
 // ── Icon helpers ──────────────────────────────────────
 function icDJ(f,k){
   const v=f.dj[k];
+  if(v==="free") return '<span class="setup-free">$0</span>';
   if(v==="y") return '<span class="y">✓</span>';
   if(v==="n") return '<span class="n">✗</span>';
   if(v==="bundle") return '<span class="bundle"><span class="bundle-check">✓</span><span class="bundle-lbl">bundled</span></span>';
@@ -377,7 +425,14 @@ function renderBars(k,u){
   const allPrices=[djP,...rv.map(r=>rTotal(r,u))];
   const minP=Math.min(...allPrices),maxP=Math.max(...allPrices);
   const mx=maxP*1.08;
+  const fy=V==='firstyear';
+  const priceSfx=fy?'/yr':'/mo';
   function priceClass(p){return p===minP?'best':p===maxP?'worst':'';}
+
+  // Update section label
+  document.getElementById('bars-lbl').textContent=fy
+    ?'First-year total cost (incl. setup fees)'
+    :'Monthly cost — comparable feature set';
 
   // Add-on breakdown line
   let addonLine='';
@@ -389,19 +444,23 @@ function renderBars(k,u){
 
   let h=`<div class="br ${pl.cls}">
     <div class="br-top"><span class="br-name">${pl.label}</span>
-      <div class="br-right"><span class="br-price ${priceClass(djP)}">$${djP}/mo</span><span class="br-bd">${bd(k,u)}</span></div>
+      <div class="br-right"><span class="br-price ${priceClass(djP)}">${fmt(djP)}${priceSfx}</span><span class="br-bd">${bd(k,u)}</span></div>
     </div>
     ${addonLine}
+    ${fy?'<div class="br-addon-line">No setup fee · No contract</div>':''}
     <div class="track"><div class="fill" style="width:${(djP/mx*100).toFixed(1)}%"></div></div>
     <div class="tags"><span class="tg ok">${PLAN_NOTES[k]}</span></div>
   </div>`;
 
   rv.forEach(r=>{
     const rP=rTotal(r,u);
+    let setupLine='';
+    if(fy&&r.setupFee>0) setupLine=`<div class="br-setup">Includes $${r.setupFee.toLocaleString()} mandatory onboarding fee</div>`;
     h+=`<div class="br">
       <div class="br-top"><span class="br-name">${r.name}</span>
-        <div class="br-right"><span class="br-price ${priceClass(rP)}">$${rP.toLocaleString()}/mo</span><span class="br-bd">${rbd(r,u)}</span></div>
+        <div class="br-right"><span class="br-price ${priceClass(rP)}">${fmt(rP)}${priceSfx}</span><span class="br-bd">${rbd(r,u)}</span></div>
       </div>
+      ${setupLine}
       <div class="track"><div class="fill" style="width:${Math.min((rP/mx)*100,100).toFixed(1)}%"></div></div>
       <div class="tags">${r.tags.map(t=>`<span class="tg ${t.t}">${t.l}</span>`).join('')}</div>
       <div class="vs-note">→ ${r.vs}</div>
@@ -416,11 +475,24 @@ function renderTable(k){
   const hdr=document.getElementById('dj-hdr');
   hdr.textContent=names[k]; hdr.className='dj'+(k==='adv'?' dj-leg':'');
   document.getElementById('tbl-note').textContent=`Showing features for ${PLANS[k].label}`;
-  document.getElementById('ftbody').innerHTML=FEATS.map(f=>`<tr>
-    <td>${f.f}${f.note?`<br><span style="font-size:8.5px;color:#9090A8">${f.note}</span>`:''}</td>
-    <td class="dj">${icDJ(f,k)}</td>
-    <td>${icR(f.ps)}</td><td>${icR(f.jb)}</td><td>${icR(f.hs)}</td>
-  </tr>`).join('');
+  document.getElementById('ftbody').innerHTML=FEATS.map(f=>{
+    if(f.setupRow){
+      const hsNote=typeof f.hsNote==='object'?f.hsNote[k]:f.hsNote;
+      const hsCls=hsNote&&hsNote.includes('mandatory')?'setup-req':'setup-opt';
+      return`<tr class="setup-row">
+        <td>${f.f}</td>
+        <td class="dj"><span class="setup-free">$0</span></td>
+        <td><span class="setup-opt">${f.psNote}</span></td>
+        <td><span class="setup-opt">${f.jbNote}</span></td>
+        <td><span class="${hsCls}">${hsNote}</span></td>
+      </tr>`;
+    }
+    return`<tr>
+      <td>${f.f}${f.note?`<br><span style="font-size:8.5px;color:#9090A8">${f.note}</span>`:''}</td>
+      <td class="dj">${icDJ(f,k)}</td>
+      <td>${icR(f.ps)}</td><td>${icR(f.jb)}</td><td>${icR(f.hs)}</td>
+    </tr>`;
+  }).join('');
 }
 
 // ── Render: Bottom line ───────────────────────────────
@@ -436,40 +508,47 @@ function renderIns(k,u){
 
   let bullets=[];
 
+  const fy=V==='firstyear';
+  const sfx=fy?'/yr':'/mo';
+
   if(k==='pro'){
     const psP=rTotal(rv[0],u);
     bullets=[
-      {t:`$${djP}/mo vs PaintScout+CRM $${psP}/mo — $${Math.abs(psP-djP)} ${djP<psP?'cheaper':'more'}`,hi:djP<psP},
+      {t:`${fmt(djP)}${sfx} vs PaintScout+CRM ${fmt(psP)}${sfx} — $${Math.abs(psP-djP).toLocaleString()} ${djP<psP?'cheaper':'more'}`,hi:djP<psP},
       {t:'Automated pipeline + 40+ email drips included'},
       {t:'Mobile app + crew management built in'},
+      {t:'No setup fee, no onboarding cost, no contract',hi:true},
     ];
-    if(addCost>0) bullets.push({t:`Add-ons included: ${activeNames.join(', ')} (+$${addCost}/mo)`,hi:true});
+    if(addCost>0) bullets.push({t:`Add-ons: ${activeNames.join(', ')} (+$${addCost}/mo)`,hi:true});
     bullets.push({t:'Upgrade to Advanced ($147) → SMS drips, email blasts, change orders, Zapier, financing'});
   } else if(k==='adv'){
     const psP=rTotal(rv[0],u),jbP=rTotal(rv[1],u);
     bullets=[
-      {t:u>=2?`At ${u} users: $${djP}/mo vs PaintScout+CRM $${psP}/mo — $${Math.abs(psP-djP)} ${djP<psP?'cheaper':'more'}`:`$${djP}/mo vs PaintScout+CRM $${psP}/mo`,hi:djP<psP},
+      {t:u>=2?`At ${u} users: ${fmt(djP)}${sfx} vs PaintScout+CRM ${fmt(psP)}${sfx} — $${Math.abs(psP-djP).toLocaleString()} ${djP<psP?'cheaper':'more'}`:`${fmt(djP)}${sfx} vs PaintScout+CRM ${fmt(psP)}${sfx}`,hi:djP<psP},
       {t:'Automated pipeline, 40+ drip sequences, change orders'},
       {t:'Google Calendar sync + Zapier + Acorn financing'},
+      {t:'No setup fee, no onboarding cost, no contract',hi:true},
     ];
     if(addCost>0) bullets.push({t:`Add-ons active: ${activeNames.join(', ')} (+$${addCost}/mo)`,hi:true});
-    bullets.push({t:`Beats Jobber Connect ($${jbP}/mo) — no pipeline, no drips`});
+    bullets.push({t:`Beats Jobber Connect (${fmt(jbP)}${sfx}) — no pipeline, no drips`});
   } else if(k==='growth'){
     const hsP=rTotal(rv[2],u);
+    const hsFee=rv[2].setupFee||0;
     bullets=[
-      {t:`HubSpot Pro (comparable automation): $${hsP.toLocaleString()}/mo`},
-      {t:`DripJobs Growth: $${djP}/mo — ${Math.round(hsP/djP*10)/10}× cheaper`,hi:true},
+      {t:`HubSpot Pro: ${fmt(hsP)}${sfx}${fy&&hsFee>0?` (incl. $${hsFee.toLocaleString()} mandatory onboarding)`:''}`,},
+      {t:`DripJobs Growth: ${fmt(djP)}${sfx} — ${Math.round(hsP/djP*10)/10}× cheaper`,hi:true},
       {t:'DJ Chat + job costing bundled — no add-on fees'},
+      {t:'$0 setup fee · No annual contract',hi:true},
     ];
     if(addCost>0) bullets.push({t:`Add-ons active: ${activeNames.join(', ')} (+$${addCost}/mo)`,hi:true});
-    bullets.push({t:'No setup fees, no annual contract'});
   } else {
     const jbP=rTotal(rv[1],u),hsP=rTotal(rv[2],u);
+    const hsFee=rv[2].setupFee||0;
     bullets=[
-      {t:`Jobber Plus+Campaigns: $${jbP.toLocaleString()}/mo`},
-      {t:`HubSpot Professional: $${hsP.toLocaleString()}/mo`},
-      {t:`DripJobs Scale: $${djP}/mo — everything bundled`,hi:true},
-      {t:'No add-on stacking, no contracts, no $4,500 onboarding fee'},
+      {t:`Jobber Plus+Campaigns: ${fmt(jbP)}${sfx}`},
+      {t:`HubSpot Professional: ${fmt(hsP)}${sfx}${fy&&hsFee>0?` (incl. $${hsFee.toLocaleString()} onboarding)`:''}`},
+      {t:`DripJobs Scale: ${fmt(djP)}${sfx} — everything bundled`,hi:true},
+      {t:'No add-on stacking · No contracts · $0 onboarding',hi:true},
     ];
   }
 
@@ -497,6 +576,12 @@ document.querySelectorAll('.upill').forEach(p=>p.addEventListener('click',()=>{
   document.querySelectorAll('.upill').forEach(x=>x.classList.remove('on'));
   p.classList.add('on');
   U=parseInt(p.dataset.u);
+  render();
+}));
+document.querySelectorAll('.vtab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.vtab').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');
+  V=t.dataset.v;
   render();
 }));
 
