@@ -4,9 +4,13 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;color:#1A1525;background:transparent}
 
 /* Layout */
-.page{display:flex;gap:0;max-width:820px;margin:0 auto;min-height:100vh}
+.page{display:flex;gap:0;max-width:1040px;margin:0 auto;min-height:100vh}
 .sidebar{width:188px;flex-shrink:0;padding:1.25rem 1rem 1.5rem;border-right:1px solid #E8E4F0;background:#FAFAFA;position:sticky;top:0;height:100vh;overflow-y:auto}
-.main{flex:1;padding:1.25rem 1.25rem 1.5rem;min-width:0}
+.main{flex:1;display:flex;gap:0;min-width:0}
+.content{flex:1;padding:1.25rem 1.25rem 1.5rem;min-width:0}
+.notes{width:220px;flex-shrink:0;padding:1.25rem 1rem 1.5rem;border-left:1px solid #E8E4F0;background:#FAFAFA}
+.notes-inner{position:sticky;top:1.25rem}
+.notes-hdr{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#9090A8;margin-bottom:10px}
 
 /* Logo */
 .logo{display:block;width:120px;margin-bottom:14px}
@@ -96,12 +100,15 @@ tbody td.dj{background:rgba(107,76,154,0.04)}
 .ins-num{font-size:18px;font-weight:700;margin:3px 0 5px;line-height:1.2}
 .ins-txt{font-size:11px;line-height:1.6;opacity:.92}
 
-/* Mobile: stack sidebar above content */
-@media(max-width:600px){
+/* Mobile: stack everything vertically */
+@media(max-width:700px){
   .page{flex-direction:column}
   .sidebar{width:100%;height:auto;position:static;border-right:none;border-bottom:1px solid #E8E4F0;padding:1rem}
   .tabs{flex-direction:row;flex-wrap:wrap}
   .tab{width:auto;font-size:10.5px;padding:5px 10px;border-radius:20px}
+  .main{flex-direction:column}
+  .notes{width:100%;border-left:none;border-top:1px solid #E8E4F0;padding:1rem}
+  .notes-inner{position:static}
 }
 </style>
 
@@ -135,31 +142,42 @@ tbody td.dj{background:rgba(107,76,154,0.04)}
 
 <!-- MAIN CONTENT -->
 <div class="main">
-  <div class="sect-lbl">Monthly cost — comparable feature set</div>
-  <div class="bars" id="bars"></div>
 
-  <div class="sect-lbl">Feature comparison — selected plan vs competitors</div>
-  <div class="tbl-note" id="tbl-note">Showing features included in DripJobs Pro</div>
-  <div class="legend">
-    <span><span class="y">✓</span> Included</span>
-    <span><span class="n">✗</span> Not available</span>
-    <span><span class="p">~</span> Partial/beta</span>
-    <span><span class="bundle-lbl leg">bundled</span> Add-on included in plan</span>
-    <span><span class="addon-pill">+ add-on</span> Extra cost</span>
-  </div>
-  <div class="ftbl-wrap">
-    <table>
-      <colgroup><col class="c0"><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup>
-      <thead><tr>
-        <th>Feature</th>
-        <th class="dj" id="dj-hdr">DripJobs Pro</th>
-        <th>PaintScout</th><th>Jobber</th><th>HubSpot</th>
-      </tr></thead>
-      <tbody id="ftbody"></tbody>
-    </table>
+  <!-- Scrollable center column -->
+  <div class="content">
+    <div class="sect-lbl">Monthly cost — comparable feature set</div>
+    <div class="bars" id="bars"></div>
+
+    <div class="sect-lbl">Feature comparison — selected plan vs competitors</div>
+    <div class="tbl-note" id="tbl-note">Showing features included in DripJobs Pro</div>
+    <div class="legend">
+      <span><span class="y">✓</span> Included</span>
+      <span><span class="n">✗</span> Not available</span>
+      <span><span class="p">~</span> Partial/beta</span>
+      <span><span class="bundle-lbl leg">bundled</span> Add-on included in plan</span>
+      <span><span class="addon-pill">+ add-on</span> Extra cost</span>
+    </div>
+    <div class="ftbl-wrap">
+      <table>
+        <colgroup><col class="c0"><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup>
+        <thead><tr>
+          <th>Feature</th>
+          <th class="dj" id="dj-hdr">DripJobs Pro</th>
+          <th>PaintScout</th><th>Jobber</th><th>HubSpot</th>
+        </tr></thead>
+        <tbody id="ftbody"></tbody>
+      </table>
+    </div>
   </div>
 
-  <div class="ins" id="ins"></div>
+  <!-- Sticky right notes panel -->
+  <div class="notes">
+    <div class="notes-inner">
+      <div class="notes-hdr">Bottom line</div>
+      <div class="ins" id="ins"></div>
+    </div>
+  </div>
+
 </div>
 
 </div>
@@ -287,7 +305,7 @@ function renderIns(k,u){
   else if(k==='pro'){body=`DripJobs Pro at $${djP}/mo (${u} user${u>1?'s':''}) undercuts PaintScout+CRM and includes automated pipeline, 40+ email drips, mobile app, and crew management. Upgrade to Advanced ($147) to unlock SMS drips, email blasts, change orders, Zapier, and financing.`;}
   else if(k==='growth'){const hsP=rTotal(rv[2],u);body=`HubSpot Professional at $${hsP.toLocaleString()}/mo is what you'd need for comparable automation. DripJobs Growth delivers that plus Chat and job costing bundled in — for $${djP}/mo with ${u} user${u>1?'s':''}. No setup fees, no lock-in.`;}
   else{const jbP=rTotal(rv[1],u);body=`DripJobs Scale bundles every capability for $${djP}/mo with ${u} user${u>1?'s':''}. Jobber Plus+Campaigns: $${jbP.toLocaleString()}/mo. HubSpot Professional: $${rTotal(rv[2],u).toLocaleString()}/mo. No add-on stacking, no contracts, no $4,500 onboarding invoices.`;}
-  el.innerHTML=`<div class="ins-lbl">Bottom line · ${u} user${u>1?'s':''}</div><div class="ins-num">${num}</div><div class="ins-txt">${body}</div>`;
+  el.innerHTML=`<div class="ins-lbl">${u} user${u>1?'s':''}</div><div class="ins-num">${num}</div><div class="ins-txt">${body}</div>`;
 }
 
 let P='pro',U=1;
