@@ -1,0 +1,253 @@
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;color:#1A1525;background:transparent}
+.w{padding:1rem 0 1.5rem}
+.badge{display:inline-flex;align-items:center;gap:5px;background:#F0EAFF;color:#6B4C9A;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:8px}
+.badge i{width:5px;height:5px;border-radius:50%;background:#6B4C9A;display:block}
+h1{font-size:16px;font-weight:600;margin-bottom:2px}
+.sub{font-size:11px;color:#6B6090;margin-bottom:1rem;line-height:1.4}
+.tabs{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap}
+.tab{background:#F5F4F8;border:1px solid #E0DCF0;color:#6B6090;font-size:11px;font-weight:500;padding:5px 11px;border-radius:20px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.tab.on{background:#6B4C9A;border-color:#6B4C9A;color:#fff}
+.tab.leg.on{background:#8B70B8;border-color:#8B70B8}
+.user-row{display:flex;align-items:center;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.user-lbl{font-size:11px;font-weight:600;color:#6B6090;white-space:nowrap}
+.upills{display:flex;gap:3px;flex-wrap:wrap}
+.upill{background:#F5F4F8;border:1px solid #E0DCF0;color:#6B6090;font-size:10px;font-weight:500;padding:4px 10px;border-radius:20px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.upill.on{background:#3A3060;border-color:#3A3060;color:#fff}
+.user-note{font-size:10px;color:#9090A8}
+.bars{margin-bottom:1rem;display:flex;flex-direction:column;gap:6px}
+.br{background:#fff;border:1px solid #E8E4F0;border-radius:9px;padding:9px 12px}
+.br.hi{border-color:#6B4C9A;background:#F8F3FF}
+.br.hi-leg{border-color:#8B70B8;background:#F5F0FF}
+.br-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.br-name{font-size:12px;font-weight:500;color:#3A3060}
+.br.hi .br-name{color:#6B4C9A;font-weight:700}
+.br.hi-leg .br-name{color:#8B70B8;font-weight:700}
+.br-right{text-align:right}
+.br-price{font-size:13px;font-weight:700;color:#3A3060;display:block}
+.br.hi .br-price{color:#6B4C9A}
+.br.hi-leg .br-price{color:#8B70B8}
+.br-bd{font-size:9px;color:#9090A8;display:block}
+.track{height:6px;background:#EDE9F5;border-radius:3px;overflow:hidden}
+.fill{height:100%;border-radius:3px;background:#C4B8DC;width:0;transition:width .55s cubic-bezier(.4,0,.2,1)}
+.br.hi .fill{background:#6B4C9A}
+.br.hi-leg .fill{background:#8B70B8}
+.tags{margin-top:5px;display:flex;flex-wrap:wrap;gap:3px}
+.tg{font-size:9px;padding:2px 6px;border-radius:8px}
+.tg.m{background:#F5F4F8;color:#8888A8}
+.tg.e{background:#FFF7ED;color:#C2770A}
+.tg.ok{background:#F0FDF4;color:#16A34A}
+.tg.w{background:#FFFBEB;color:#B45309}
+.vs-note{font-size:10px;color:#6B4C9A;font-weight:600;margin-top:4px}
+.br.hi-leg .vs-note{color:#8B70B8}
+.sect-lbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9090A8;margin-bottom:5px}
+.tbl-note{font-size:9px;color:#9090A8;margin-bottom:5px;font-style:italic}
+.ftbl-wrap{border:1px solid #E8E4F0;border-radius:9px;overflow:hidden;margin-bottom:1rem}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+col.c0{width:44%}col.c1,col.c2,col.c3,col.c4{width:14%}
+thead th{padding:6px 3px;font-weight:600;font-size:9px;letter-spacing:.04em;text-transform:uppercase;text-align:center;background:#F5F4F8;color:#8888A8;border-bottom:1px solid #E8E4F0;line-height:1.3}
+thead th:first-child{text-align:left;padding-left:10px}
+thead th.dj{background:#F0EAFF;color:#6B4C9A}
+thead th.dj-leg{background:#F0EAFF;color:#8B70B8}
+tbody td{padding:5px 3px;text-align:center;border-bottom:1px solid #F5F3FA;vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody td:first-child{text-align:left;padding-left:10px;color:#3A3060;font-size:10.5px;line-height:1.35}
+tbody td.dj{background:rgba(107,76,154,0.04)}
+.y{color:#16A34A;font-size:13px}
+.n{color:#C8C0D8;font-size:13px}
+.p{color:#D97706;font-size:10px;font-weight:700}
+.bundle{display:inline-flex;flex-direction:column;align-items:center;gap:0}
+.bundle-check{color:#16A34A;font-size:13px;line-height:1}
+.bundle-lbl{font-size:7px;color:#16A34A;font-weight:700;letter-spacing:.03em}
+.addon-pill{display:inline-block;background:#FFF7ED;color:#C2770A;font-size:8px;font-weight:700;padding:1px 4px;border-radius:6px;line-height:1.5;white-space:nowrap}
+.legend{display:flex;gap:8px;font-size:9.5px;color:#8888A8;margin-bottom:.75rem;flex-wrap:wrap;align-items:center}
+.legend span{display:flex;align-items:center;gap:3px}
+.ins{border-radius:10px;padding:12px 14px;color:white}
+.ins.purple{background:#6B4C9A}.ins.mid{background:#8B70B8}
+.ins-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.65;margin-bottom:3px}
+.ins-num{font-size:18px;font-weight:700;margin:3px 0 5px;line-height:1.2}
+.ins-txt{font-size:11px;line-height:1.6;opacity:.92}
+</style>
+
+<div class="w">
+<div class="badge"><i></i>DripJobs · Value Analysis</div>
+<h1>What do you actually get for your money?</h1>
+<p class="sub">Select a plan and team size. The feature table reflects exactly what that plan includes.</p>
+
+<div class="tabs" id="tabs">
+  <button class="tab on" data-s="pro">Pro — $97/mo</button>
+  <button class="tab leg" data-s="adv">Advanced (Legacy) — $147/mo</button>
+  <button class="tab" data-s="growth">Growth — $197/mo</button>
+  <button class="tab" data-s="scale">Scale — $297/mo</button>
+</div>
+
+<div class="user-row">
+  <span class="user-lbl">Team size:</span>
+  <div class="upills" id="upills">
+    <button class="upill on" data-u="1">1 user</button>
+    <button class="upill" data-u="2">2 users</button>
+    <button class="upill" data-u="3">3 users</button>
+    <button class="upill" data-u="4">4 users</button>
+    <button class="upill" data-u="5">5 users</button>
+  </div>
+  <span class="user-note">+$50/mo per additional user on DripJobs</span>
+</div>
+
+<div class="sect-lbl">Monthly cost — comparable feature set</div>
+<div class="bars" id="bars"></div>
+
+<div class="sect-lbl">Feature comparison — selected plan vs competitors</div>
+<div class="tbl-note" id="tbl-note">Showing features included in DripJobs Pro</div>
+<div class="legend">
+  <span><span class="y">✓</span> Included</span>
+  <span><span class="n">✗</span> Not available</span>
+  <span><span class="p">~</span> Partial/beta</span>
+  <span><span class="bundle-lbl" style="background:#F0FDF4;color:#16A34A;padding:1px 4px;border-radius:4px">bundled</span> Add-on included in plan</span>
+  <span><span class="addon-pill">+ add-on</span> Extra cost</span>
+</div>
+<div class="ftbl-wrap">
+  <table>
+    <colgroup><col class="c0"><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup>
+    <thead><tr>
+      <th>Feature</th>
+      <th class="dj" id="dj-hdr">DripJobs Pro</th>
+      <th>PaintScout</th><th>Jobber</th><th>HubSpot</th>
+    </tr></thead>
+    <tbody id="ftbody"></tbody>
+  </table>
+</div>
+
+<div class="ins" id="ins"></div>
+</div>
+
+<script>
+const DJ_PER=50,PS_PER=99;
+const PLANS={
+  pro:    {base:97, label:"DripJobs Pro",              cls:"hi",     insCls:"purple"},
+  adv:    {base:147,label:"DripJobs Advanced (Legacy)", cls:"hi-leg", insCls:"mid"},
+  growth: {base:197,label:"DripJobs Growth",            cls:"hi",     insCls:"purple"},
+  scale:  {base:297,label:"DripJobs Scale",             cls:"hi",     insCls:"purple"},
+};
+const PLAN_NOTES={
+  pro:    "Core CRM · email pipeline · 40+ email drips · proposals · invoicing · scheduling · crew · mobile app",
+  adv:    "Full CRM + SMS drips · email blasts · change orders · Google Calendar · Zapier · financing",
+  growth: "Everything in Advanced + DripJobs Chat + Job Costing bundled",
+  scale:  "Everything bundled — Chat · Job Costing · Jobi AI · Production Rates",
+};
+const FEATS=[
+  {f:"Automated email drip sequences",       dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"y",jb:"n",hs:"n",a:{}},
+  {f:"SMS drip sequences",                   dj:{pro:"n",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"n",hs:"n",a:{}},
+  {f:"Email blast marketing",                dj:{pro:"n",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"p",hs:"p",a:{}},
+  {f:"Change orders",                        dj:{pro:"n",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"p",hs:"n",a:{}},
+  {f:"Google Calendar sync",                 dj:{pro:"n",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"n",hs:"n",a:{}},
+  {f:"Zapier integration",                   dj:{pro:"n",adv:"y",growth:"y",scale:"y"},         ps:"y",jb:"y",hs:"y",a:{}},
+  {f:"Financing (Acorn Finance)",            dj:{pro:"n",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"n",hs:"n",a:{}},
+  {f:"Production rate estimating",           dj:{pro:"addon",adv:"addon",growth:"addon",scale:"bundle"},ps:"y",jb:"n",hs:"n",a:{pro:"add-on",adv:"$99/mo",growth:"$99/mo",scale:""}},
+  {f:"Job costing",                          dj:{pro:"addon",adv:"addon",growth:"bundle",scale:"bundle"},ps:"n",jb:"p",hs:"n",a:{pro:"add-on",adv:"$49/mo",growth:"",scale:""}},
+  {f:"Two-way SMS texting (Chat)",           dj:{pro:"n",adv:"addon",growth:"bundle",scale:"bundle"},  ps:"n",jb:"n",hs:"n",a:{pro:"",adv:"$25/mo",growth:"",scale:""}},
+  {f:"AI assistant (Jobi AI)",               dj:{pro:"addon",adv:"addon",growth:"addon",scale:"bundle"},ps:"n",jb:"n",hs:"n",a:{pro:"add-on",adv:"$39/mo",growth:"$39/mo",scale:""}},
+  {f:"Good-Better-Best package pricing",     dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"p",hs:"n",a:{}},
+  {f:"Proposals + e-signatures",             dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"y",jb:"y",hs:"n",a:{}},
+  {f:"Native mobile app",                    dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"y",hs:"y",a:{}},
+  {f:"Crew assignment + management",         dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"y",hs:"n",a:{}},
+  {f:"ACH payments + deposits",              dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"n",hs:"n",a:{}},
+  {f:"Booking form + pipeline automation",   dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"p",jb:"p",hs:"n",a:{}},
+  {f:"Additional users",                     dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"y",jb:"y",hs:"y",note:"DJ $50 · PS $99 · JB varies",a:{}},
+  {f:"No annual contract",                   dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"n",jb:"y",hs:"p",a:{}},
+  {f:"Built for painting contractors",       dj:{pro:"y",adv:"y",growth:"y",scale:"y"},         ps:"y",jb:"n",hs:"n",a:{}},
+];
+function icDJ(f,k){
+  const v=f.dj[k];
+  if(v==="y") return '<span class="y">✓</span>';
+  if(v==="n") return '<span class="n">✗</span>';
+  if(v==="bundle") return '<span class="bundle"><span class="bundle-check">✓</span><span class="bundle-lbl">bundled</span></span>';
+  if(v==="addon"){const n=f.a[k]||"add-on";return`<span class="addon-pill">+${n}</span>`;}
+  return '<span class="p">~</span>';
+}
+function icR(v){return v==="y"?'<span class="y">✓</span>':v==="n"?'<span class="n">✗</span>':'<span class="p">~</span>';}
+const RIVALS={
+  pro:[
+    {name:"PaintScout + CRM add-on",base1:148,perUser:PS_PER,tags:[{t:"e",l:"+$49/mo CRM add-on"},{t:"m",l:"No automated drips"},{t:"m",l:"No mobile app"},{t:"m",l:"No crew management"},{t:"m",l:"No change orders"}],vs:"$51 more — manual pipeline, no drips."},
+    {name:"Jobber Connect",base1:129,perUser:29,tags:[{t:"m",l:"No pipeline (needs $599/mo Plus)"},{t:"m",l:"No drip sequences"},{t:"m",l:"No production rates"}],vs:"Similar price — no pipeline, no automation."},
+    {name:"HubSpot Starter",base1:50,perUser:20,tags:[{t:"m",l:"No production rates"},{t:"m",l:"No contractor pipeline"},{t:"w",l:"Real automation needs $1,300+/mo"}],vs:"Cheap — generic CRM, no contractor tools."},
+  ],
+  adv:[
+    {name:"PaintScout + CRM add-on",base1:148,perUser:PS_PER,tags:[{t:"e",l:"+$49/mo CRM add-on"},{t:"m",l:"No drip sequences"},{t:"m",l:"No mobile app"},{t:"m",l:"No crew management"},{t:"m",l:"No change orders"},{t:"m",l:"No financing"}],vs:"$1 cheaper at 1 user. At 2 users: $49 more with far fewer features."},
+    {name:"Jobber Connect",base1:129,perUser:29,tags:[{t:"m",l:"No pipeline (needs $599/mo Plus)"},{t:"m",l:"No drip sequences"},{t:"m",l:"No production rates"},{t:"m",l:"No change orders"}],vs:"$18 cheaper — no pipeline, no automation, no estimating."},
+    {name:"HubSpot Starter",base1:50,perUser:20,tags:[{t:"m",l:"No production rates"},{t:"m",l:"No contractor pipeline"},{t:"w",l:"Real automation needs $1,300+/mo"}],vs:"Much cheaper — generic CRM with none of the Advanced features."},
+  ],
+  growth:[
+    {name:"PaintScout + CRM + external SMS",base1:178,perUser:PS_PER,tags:[{t:"e",l:"+$49/mo CRM add-on"},{t:"e",l:"+$30/mo external SMS"},{t:"m",l:"No job costing"},{t:"m",l:"No drip sequences"}],vs:"Cheaper at 1 user — by 2 users DripJobs is better value."},
+    {name:"Jobber Connect + external SMS",base1:159,perUser:29,tags:[{t:"e",l:"+$30/mo third-party SMS"},{t:"m",l:"No pipeline"},{t:"m",l:"No drip sequences"},{t:"m",l:"No job costing"}],vs:"Cheaper — missing pipeline, drips, and job costing entirely."},
+    {name:"HubSpot Pro (for automation)",base1:1300,perUser:50,tags:[{t:"e",l:"$1,300/mo minimum"},{t:"e",l:"$4,500 onboarding fee"},{t:"m",l:"No production rates"},{t:"m",l:"Not built for contractors"}],vs:"6.6× more expensive — still missing contractor features."},
+  ],
+  scale:[
+    {name:"PaintScout (fully loaded)",base1:209,perUser:PS_PER,tags:[{t:"e",l:"+$49/mo CRM add-on"},{t:"e",l:"+$30/mo SMS app"},{t:"m",l:"No job costing"},{t:"m",l:"No drip sequences"}],vs:"PS charges $99/user vs DripJobs $50 — gap grows with every user."},
+    {name:"Jobber Plus + Campaigns",base1:653,perUser:0,tags:[{t:"e",l:"$599/mo Plus for pipeline (beta)"},{t:"e",l:"+$29–79/mo campaigns add-on"},{t:"m",l:"No production rates"},{t:"m",l:"No AI assistant"}],vs:"2.2× more expensive — pipeline in beta, no automation."},
+    {name:"HubSpot Professional",base1:1300,perUser:50,tags:[{t:"e",l:"$1,300+/mo suite"},{t:"e",l:"$4,500 onboarding fee"},{t:"w",l:"6 seats included, +$50 after"}],vs:"4.4× more expensive — enterprise tool, not for painters."},
+  ],
+};
+function djTotal(k,u){return PLANS[k].base+Math.max(0,u-1)*DJ_PER;}
+function rTotal(r,u){return r.base1+Math.max(0,u-1)*r.perUser;}
+function bd(k,u){return u===1?'':`$${PLANS[k].base}+${u-1}×$${DJ_PER}`;}
+function rbd(r,u){if(u===1||r.perUser===0)return r.perUser===0&&u>1?'seat allowance included':'';return`$${r.base1}+${u-1}×$${r.perUser}`;}
+
+function renderBars(k,u){
+  const pl=PLANS[k],rv=RIVALS[k],djP=djTotal(k,u);
+  const mx=Math.max(djP,...rv.map(r=>rTotal(r,u)))*1.08;
+  let h=`<div class="br ${pl.cls}">
+    <div class="br-top"><span class="br-name">${pl.label}</span>
+      <div class="br-right"><span class="br-price">$${djP}/mo</span><span class="br-bd">${bd(k,u)}</span></div>
+    </div>
+    <div class="track"><div class="fill" style="width:${(djP/mx*100).toFixed(1)}%"></div></div>
+    <div class="tags"><span class="tg ok">${PLAN_NOTES[k]}</span></div>
+  </div>`;
+  rv.forEach(r=>{
+    const rP=rTotal(r,u);
+    h+=`<div class="br">
+      <div class="br-top"><span class="br-name">${r.name}</span>
+        <div class="br-right"><span class="br-price">$${rP.toLocaleString()}/mo</span><span class="br-bd">${rbd(r,u)}</span></div>
+      </div>
+      <div class="track"><div class="fill" style="width:${Math.min((rP/mx)*100,100).toFixed(1)}%"></div></div>
+      <div class="tags">${r.tags.map(t=>`<span class="tg ${t.t}">${t.l}</span>`).join('')}</div>
+      <div class="vs-note">→ ${r.vs}</div>
+    </div>`;
+  });
+  document.getElementById('bars').innerHTML=h;
+}
+
+function renderTable(k){
+  const names={pro:'DripJobs Pro',adv:'DripJobs Advanced',growth:'DripJobs Growth',scale:'DripJobs Scale'};
+  const hdr=document.getElementById('dj-hdr');
+  hdr.textContent=names[k]; hdr.className='dj'+(k==='adv'?' dj-leg':'');
+  document.getElementById('tbl-note').textContent=`Showing features for ${PLANS[k].label}`;
+  document.getElementById('ftbody').innerHTML=FEATS.map(f=>`<tr>
+    <td>${f.f}${f.note?`<br><span style="font-size:8.5px;color:#9090A8">${f.note}</span>`:''}</td>
+    <td class="dj">${icDJ(f,k)}</td>
+    <td>${icR(f.ps)}</td><td>${icR(f.jb)}</td><td>${icR(f.hs)}</td>
+  </tr>`).join('');
+}
+
+function renderIns(k,u){
+  const djP=djTotal(k,u),rv=RIVALS[k];
+  const maxRP=Math.max(...rv.map(r=>rTotal(r,u)));
+  const el=document.getElementById('ins');
+  el.className='ins '+PLANS[k].insCls;
+  const sav=maxRP-djP;
+  const num=sav>0?`Save $${sav.toLocaleString()}/mo vs top competitor`:`$${djP}/mo · ${u} user${u>1?'s':''}`;
+  let body='';
+  if(k==='adv'&&u>=2){const psP=rTotal(rv[0],u);body=`At ${u} users, DripJobs Advanced is $${djP}/mo vs PaintScout+CRM at $${psP}/mo — DripJobs is now $${psP-djP} cheaper, with automated pipeline, 40+ drip sequences, change orders, Google Calendar, Zapier, financing, and crew management.`;}
+  else if(k==='pro'){body=`DripJobs Pro at $${djP}/mo (${u} user${u>1?'s':''}) undercuts PaintScout+CRM and includes automated pipeline, 40+ email drips, mobile app, and crew management. Upgrade to Advanced ($147) to unlock SMS drips, email blasts, change orders, Zapier, and financing.`;}
+  else if(k==='growth'){const hsP=rTotal(rv[2],u);body=`HubSpot Professional at $${hsP.toLocaleString()}/mo is what you'd need for comparable automation. DripJobs Growth delivers that plus Chat and job costing bundled in — for $${djP}/mo with ${u} user${u>1?'s':''}. No setup fees, no lock-in.`;}
+  else{const jbP=rTotal(rv[1],u);body=`DripJobs Scale bundles every capability for $${djP}/mo with ${u} user${u>1?'s':''}. Jobber Plus+Campaigns: $${jbP.toLocaleString()}/mo. HubSpot Professional: $${rTotal(rv[2],u).toLocaleString()}/mo. No add-on stacking, no contracts, no $4,500 onboarding invoices.`;}
+  el.innerHTML=`<div class="ins-lbl">Bottom line · ${u} user${u>1?'s':''}</div><div class="ins-num">${num}</div><div class="ins-txt">${body}</div>`;
+}
+
+let P='pro',U=1;
+function render(){renderBars(P,U);renderTable(P);renderIns(P,U);}
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');P=t.dataset.s;render();}));
+document.querySelectorAll('.upill').forEach(p=>p.addEventListener('click',()=>{document.querySelectorAll('.upill').forEach(x=>x.classList.remove('on'));p.classList.add('on');U=parseInt(p.dataset.u);render();}));
+render();
+</script>
