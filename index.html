@@ -2,21 +2,35 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;color:#1A1525;background:transparent}
-.w{padding:1rem 1rem 1.5rem;max-width:640px;margin:0 auto}
+
+/* Layout */
+.page{display:flex;gap:0;max-width:820px;margin:0 auto;min-height:100vh}
+.sidebar{width:188px;flex-shrink:0;padding:1.25rem 1rem 1.5rem;border-right:1px solid #E8E4F0;background:#FAFAFA;position:sticky;top:0;height:100vh;overflow-y:auto}
+.main{flex:1;padding:1.25rem 1.25rem 1.5rem;min-width:0}
+
+/* Badge + header */
 .badge{display:inline-flex;align-items:center;gap:5px;background:#F0EAFF;color:#6B4C9A;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:8px}
 .badge i{width:5px;height:5px;border-radius:50%;background:#6B4C9A;display:block}
-h1{font-size:16px;font-weight:600;margin-bottom:2px}
-.sub{font-size:11px;color:#6B6090;margin-bottom:1rem;line-height:1.4}
-.tabs{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap}
-.tab{background:#F5F4F8;border:1px solid #E0DCF0;color:#6B6090;font-size:11px;font-weight:500;padding:5px 11px;border-radius:20px;cursor:pointer;transition:all .15s;white-space:nowrap}
+h1{font-size:15px;font-weight:700;margin-bottom:4px;line-height:1.3;color:#1A1525}
+.sub{font-size:10.5px;color:#6B6090;margin-bottom:1.25rem;line-height:1.5}
+
+/* Sidebar nav labels */
+.nav-lbl{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#9090A8;margin-bottom:6px;margin-top:1rem}
+.nav-lbl:first-of-type{margin-top:0}
+
+/* Plan tabs — vertical in sidebar */
+.tabs{display:flex;flex-direction:column;gap:3px;margin-bottom:0}
+.tab{background:#F5F4F8;border:1px solid #E0DCF0;color:#6B6090;font-size:11px;font-weight:500;padding:7px 10px;border-radius:8px;cursor:pointer;transition:all .15s;text-align:left;width:100%;line-height:1.3}
 .tab.on{background:#6B4C9A;border-color:#6B4C9A;color:#fff}
 .tab.leg.on{background:#8B70B8;border-color:#8B70B8}
-.user-row{display:flex;align-items:center;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
-.user-lbl{font-size:11px;font-weight:600;color:#6B6090;white-space:nowrap}
-.upills{display:flex;gap:3px;flex-wrap:wrap}
-.upill{background:#F5F4F8;border:1px solid #E0DCF0;color:#6B6090;font-size:10px;font-weight:500;padding:4px 10px;border-radius:20px;cursor:pointer;transition:all .15s;white-space:nowrap}
+
+/* Team size pills — wrap in sidebar */
+.upills{display:flex;flex-wrap:wrap;gap:3px}
+.upill{background:#F5F4F8;border:1px solid #E0DCF0;color:#6B6090;font-size:10px;font-weight:500;padding:4px 9px;border-radius:20px;cursor:pointer;transition:all .15s;white-space:nowrap}
 .upill.on{background:#3A3060;border-color:#3A3060;color:#fff}
-.user-note{font-size:10px;color:#9090A8}
+.user-note{font-size:9px;color:#9090A8;margin-top:6px;line-height:1.4;display:block}
+
+/* Bars */
 .bars{margin-bottom:1rem;display:flex;flex-direction:column;gap:6px}
 .br{background:#fff;border:1px solid #E8E4F0;border-radius:9px;padding:9px 12px}
 .br.hi{border-color:#6B4C9A;background:#F8F3FF}
@@ -42,8 +56,12 @@ h1{font-size:16px;font-weight:600;margin-bottom:2px}
 .tg.w{background:#FFFBEB;color:#B45309}
 .vs-note{font-size:10px;color:#6B4C9A;font-weight:600;margin-top:4px}
 .br.hi-leg .vs-note{color:#8B70B8}
+
+/* Section labels */
 .sect-lbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9090A8;margin-bottom:5px}
 .tbl-note{font-size:9px;color:#9090A8;margin-bottom:5px;font-style:italic}
+
+/* Feature table */
 .ftbl-wrap{border:1px solid #E8E4F0;border-radius:9px;overflow:hidden;margin-bottom:1rem}
 table{width:100%;border-collapse:collapse;table-layout:fixed}
 col.c0{width:52%}col.c1,col.c2,col.c3,col.c4{width:12%}
@@ -61,65 +79,83 @@ tbody td.dj{background:rgba(107,76,154,0.04)}
 .bundle{display:inline-flex;flex-direction:column;align-items:center;gap:0}
 .bundle-check{color:#16A34A;font-size:13px;line-height:1}
 .bundle-lbl{font-size:7px;color:#16A34A;font-weight:700;letter-spacing:.03em}
+.bundle-lbl.leg{background:#F0FDF4;padding:1px 4px;border-radius:4px}
 .addon-pill{display:inline-block;background:#FFF7ED;color:#C2770A;font-size:8px;font-weight:700;padding:1px 4px;border-radius:6px;line-height:1.5;white-space:nowrap}
 .legend{display:flex;gap:8px;font-size:9.5px;color:#8888A8;margin-bottom:.75rem;flex-wrap:wrap;align-items:center}
 .legend span{display:flex;align-items:center;gap:3px}
+
+/* Insight card */
 .ins{border-radius:10px;padding:12px 14px;color:white}
 .ins.purple{background:#6B4C9A}.ins.mid{background:#8B70B8}
 .ins-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.65;margin-bottom:3px}
 .ins-num{font-size:18px;font-weight:700;margin:3px 0 5px;line-height:1.2}
 .ins-txt{font-size:11px;line-height:1.6;opacity:.92}
+
+/* Mobile: stack sidebar above content */
+@media(max-width:600px){
+  .page{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:static;border-right:none;border-bottom:1px solid #E8E4F0;padding:1rem}
+  .tabs{flex-direction:row;flex-wrap:wrap}
+  .tab{width:auto;font-size:10.5px;padding:5px 10px;border-radius:20px}
+}
 </style>
 
-<div class="w">
-<div class="badge"><i></i>DripJobs · Value Analysis</div>
-<h1>What do you actually get for your money?</h1>
-<p class="sub">Select a plan and team size. The feature table reflects exactly what that plan includes.</p>
+<div class="page">
 
-<div class="tabs" id="tabs">
-  <button class="tab on" data-s="pro">Pro — $97/mo</button>
-  <button class="tab leg" data-s="adv">Advanced (Legacy) — $147/mo</button>
-  <button class="tab" data-s="growth">Growth — $197/mo</button>
-  <button class="tab" data-s="scale">Scale — $297/mo</button>
-</div>
+<!-- LEFT SIDEBAR -->
+<div class="sidebar">
+  <div class="badge"><i></i>Value Analysis</div>
+  <h1>What do you actually get for your money?</h1>
+  <p class="sub">Select a plan and team size to compare.</p>
 
-<div class="user-row">
-  <span class="user-lbl">Team size:</span>
+  <div class="nav-lbl">Plan</div>
+  <div class="tabs" id="tabs">
+    <button class="tab on" data-s="pro">Pro — $97/mo</button>
+    <button class="tab leg" data-s="adv">Advanced (Legacy) — $147/mo</button>
+    <button class="tab" data-s="growth">Growth — $197/mo</button>
+    <button class="tab" data-s="scale">Scale — $297/mo</button>
+  </div>
+
+  <div class="nav-lbl">Team size</div>
   <div class="upills" id="upills">
-    <button class="upill on" data-u="1">1 user</button>
-    <button class="upill" data-u="2">2 users</button>
-    <button class="upill" data-u="3">3 users</button>
-    <button class="upill" data-u="4">4 users</button>
-    <button class="upill" data-u="5">5 users</button>
+    <button class="upill on" data-u="1">1</button>
+    <button class="upill" data-u="2">2</button>
+    <button class="upill" data-u="3">3</button>
+    <button class="upill" data-u="4">4</button>
+    <button class="upill" data-u="5">5</button>
   </div>
   <span class="user-note">+$50/mo per additional user on DripJobs</span>
 </div>
 
-<div class="sect-lbl">Monthly cost — comparable feature set</div>
-<div class="bars" id="bars"></div>
+<!-- MAIN CONTENT -->
+<div class="main">
+  <div class="sect-lbl">Monthly cost — comparable feature set</div>
+  <div class="bars" id="bars"></div>
 
-<div class="sect-lbl">Feature comparison — selected plan vs competitors</div>
-<div class="tbl-note" id="tbl-note">Showing features included in DripJobs Pro</div>
-<div class="legend">
-  <span><span class="y">✓</span> Included</span>
-  <span><span class="n">✗</span> Not available</span>
-  <span><span class="p">~</span> Partial/beta</span>
-  <span><span class="bundle-lbl" style="background:#F0FDF4;color:#16A34A;padding:1px 4px;border-radius:4px">bundled</span> Add-on included in plan</span>
-  <span><span class="addon-pill">+ add-on</span> Extra cost</span>
-</div>
-<div class="ftbl-wrap">
-  <table>
-    <colgroup><col class="c0"><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup>
-    <thead><tr>
-      <th>Feature</th>
-      <th class="dj" id="dj-hdr">DripJobs Pro</th>
-      <th>PaintScout</th><th>Jobber</th><th>HubSpot</th>
-    </tr></thead>
-    <tbody id="ftbody"></tbody>
-  </table>
+  <div class="sect-lbl">Feature comparison — selected plan vs competitors</div>
+  <div class="tbl-note" id="tbl-note">Showing features included in DripJobs Pro</div>
+  <div class="legend">
+    <span><span class="y">✓</span> Included</span>
+    <span><span class="n">✗</span> Not available</span>
+    <span><span class="p">~</span> Partial/beta</span>
+    <span><span class="bundle-lbl leg">bundled</span> Add-on included in plan</span>
+    <span><span class="addon-pill">+ add-on</span> Extra cost</span>
+  </div>
+  <div class="ftbl-wrap">
+    <table>
+      <colgroup><col class="c0"><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup>
+      <thead><tr>
+        <th>Feature</th>
+        <th class="dj" id="dj-hdr">DripJobs Pro</th>
+        <th>PaintScout</th><th>Jobber</th><th>HubSpot</th>
+      </tr></thead>
+      <tbody id="ftbody"></tbody>
+    </table>
+  </div>
+
+  <div class="ins" id="ins"></div>
 </div>
 
-<div class="ins" id="ins"></div>
 </div>
 
 <script>
