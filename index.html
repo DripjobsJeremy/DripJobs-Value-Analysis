@@ -97,8 +97,10 @@ tbody td.dj{background:rgba(107,76,154,0.04)}
 .ins{border-radius:10px;padding:12px 14px;color:white}
 .ins.purple{background:#6B4C9A}.ins.mid{background:#8B70B8}
 .ins-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.65;margin-bottom:3px}
-.ins-num{font-size:18px;font-weight:700;margin:3px 0 5px;line-height:1.2}
-.ins-txt{font-size:11px;line-height:1.6;opacity:.92}
+.ins-num{font-size:16px;font-weight:700;margin:3px 0 8px;line-height:1.2}
+.ins-bullets{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px}
+.ins-bullets li{font-size:11px;line-height:1.5;opacity:.92;padding-left:14px;position:relative}
+.ins-bullets li::before{content:'•';position:absolute;left:0;opacity:.6}
 
 /* Mobile: stack everything vertically */
 @media(max-width:700px){
@@ -300,12 +302,43 @@ function renderIns(k,u){
   el.className='ins '+PLANS[k].insCls;
   const sav=maxRP-djP;
   const num=sav>0?`Save $${sav.toLocaleString()}/mo vs top competitor`:`$${djP}/mo · ${u} user${u>1?'s':''}`;
-  let body='';
-  if(k==='adv'&&u>=2){const psP=rTotal(rv[0],u);body=`At ${u} users, DripJobs Advanced is $${djP}/mo vs PaintScout+CRM at $${psP}/mo — DripJobs is now $${psP-djP} cheaper, with automated pipeline, 40+ drip sequences, change orders, Google Calendar, Zapier, financing, and crew management.`;}
-  else if(k==='pro'){body=`DripJobs Pro at $${djP}/mo (${u} user${u>1?'s':''}) undercuts PaintScout+CRM and includes automated pipeline, 40+ email drips, mobile app, and crew management. Upgrade to Advanced ($147) to unlock SMS drips, email blasts, change orders, Zapier, and financing.`;}
-  else if(k==='growth'){const hsP=rTotal(rv[2],u);body=`HubSpot Professional at $${hsP.toLocaleString()}/mo is what you'd need for comparable automation. DripJobs Growth delivers that plus Chat and job costing bundled in — for $${djP}/mo with ${u} user${u>1?'s':''}. No setup fees, no lock-in.`;}
-  else{const jbP=rTotal(rv[1],u);body=`DripJobs Scale bundles every capability for $${djP}/mo with ${u} user${u>1?'s':''}. Jobber Plus+Campaigns: $${jbP.toLocaleString()}/mo. HubSpot Professional: $${rTotal(rv[2],u).toLocaleString()}/mo. No add-on stacking, no contracts, no $4,500 onboarding invoices.`;}
-  el.innerHTML=`<div class="ins-lbl">${u} user${u>1?'s':''}</div><div class="ins-num">${num}</div><div class="ins-txt">${body}</div>`;
+  let bullets=[];
+  if(k==='pro'){
+    const psP=rTotal(rv[0],u);
+    bullets=[
+      `$${djP}/mo undercuts PaintScout+CRM ($${psP}/mo) by $${psP-djP}`,
+      'Automated pipeline + 40+ email drips included',
+      'Mobile app + crew management built in',
+      'Upgrade to Advanced ($147) → SMS drips, email blasts, change orders, Zapier, financing',
+    ];
+  } else if(k==='adv'){
+    const psP=rTotal(rv[0],u),jbP=rTotal(rv[1],u);
+    bullets=[
+      u>=2?`At ${u} users: $${djP}/mo vs PaintScout+CRM $${psP}/mo — $${psP-djP} cheaper`:`$${djP}/mo vs PaintScout+CRM $${psP}/mo`,
+      'Automated pipeline, 40+ drip sequences, change orders',
+      'Google Calendar sync + Zapier + Acorn financing',
+      'Crew management + mobile app included',
+      `Beats Jobber Connect ($${jbP}/mo) — Jobber has no pipeline, no drips`,
+    ];
+  } else if(k==='growth'){
+    const hsP=rTotal(rv[2],u),psP=rTotal(rv[0],u);
+    bullets=[
+      `HubSpot Pro (comparable automation): $${hsP.toLocaleString()}/mo`,
+      `DripJobs Growth: $${djP}/mo — ${Math.round(hsP/djP*10)/10}× cheaper`,
+      'DJ Chat + job costing bundled — no add-on fees',
+      'No setup fees, no annual contract',
+    ];
+  } else {
+    const jbP=rTotal(rv[1],u),hsP=rTotal(rv[2],u);
+    bullets=[
+      `Jobber Plus+Campaigns: $${jbP.toLocaleString()}/mo`,
+      `HubSpot Professional: $${hsP.toLocaleString()}/mo`,
+      `DripJobs Scale: $${djP}/mo — everything bundled`,
+      'No add-on stacking, no contracts, no $4,500 onboarding fee',
+    ];
+  }
+  const li=bullets.map(b=>`<li>${b}</li>`).join('');
+  el.innerHTML=`<div class="ins-lbl">${u} user${u>1?'s':''}</div><div class="ins-num">${num}</div><ul class="ins-bullets">${li}</ul>`;
 }
 
 let P='pro',U=1;
