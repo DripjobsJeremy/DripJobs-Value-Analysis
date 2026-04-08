@@ -203,8 +203,8 @@ tbody td.dj{background:rgba(107,76,154,0.04)}
   <div class="tabs" id="tabs">
     <button type="button" class="tab on" data-s="pro">Pro — $97/mo</button>
     <button type="button" class="tab leg" data-s="adv" id="tab-adv">Advanced — $147/mo</button>
-    <button type="button" class="tab" data-s="growth">Growth — $197/mo</button>
-    <button type="button" class="tab" data-s="scale">Scale — $297/mo</button>
+    <button type="button" class="tab" data-s="growth" id="tab-growth">Growth — $197/mo</button>
+    <button type="button" class="tab" data-s="scale" id="tab-scale">Scale — $297/mo</button>
   </div>
 
   <div class="nav-lbl">Team size</div>
@@ -572,12 +572,16 @@ function renderIns(k,u){
 
 // ── Render: Plan tabs (mode-aware) ────────────────────
 function renderTabs(){
-  const advTab=document.getElementById('tab-adv');
   const isNew=M==='new';
-  advTab.style.display=isNew?'none':'';
+  // Current = Pro + Advanced only; New = Pro + Growth + Scale only
+  document.getElementById('tab-adv').style.display   = isNew  ? 'none' : '';
+  document.getElementById('tab-growth').style.display = !isNew ? 'none' : '';
+  document.getElementById('tab-scale').style.display  = !isNew ? 'none' : '';
   document.getElementById('mode-label').textContent=isNew?'New Pricing Tiers':'Current Pricing';
-  // If Advanced is selected and we switch to new pricing, fall back to Pro
-  if(isNew&&P==='adv'){
+  // If selected plan isn't valid in this mode, fall back to Pro
+  const invalidInNew    = isNew  && P==='adv';
+  const invalidInCurrent= !isNew && (P==='growth'||P==='scale');
+  if(invalidInNew||invalidInCurrent){
     P='pro';
     document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
     document.querySelector('.tab[data-s="pro"]').classList.add('on');
